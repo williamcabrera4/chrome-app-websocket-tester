@@ -1,21 +1,18 @@
 /* Base Application Styles */
-body {
-  color: #fff;
-  background: #222;
+
+.margin-bottom-0 {
+  margin-bottom: 0;
 }
 
-.index img {
-  margin: 40px auto;
-  border-radius: 4px;
-  background: #fff;
-  display: block;
+.margin-left-15 {
+  margin-left: 15px;
 }
 
-.index .notice {
-  margin: 20px auto;
-  padding: 15px 0;
-  text-align: center;
-  border: 1px solid #000;
-  border-width: 1px 0;
-  background: green;
+.relative-container {
+  position: relative;
+}
+
+.form-bottom-element {
+  position: absolute;
+  bottom: 8px;
 }
