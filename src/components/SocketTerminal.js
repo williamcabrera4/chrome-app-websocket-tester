@@ -1,44 +1,46 @@
 import React from 'react';
 import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
+import { connect } from 'react-redux';
 import SocketTerminalList from './SocketTerminalList';
+import { ConnectionStatus } from '../constant/constant';
 import Row from './Row';
 import Column from './Column';
-
-const terminalData = [
-  {
-    date: new Date(),
-    message: 'You: This is an example message'
-  },
-  {
-    date: new Date(),
-    message: 'Server: This is an example message'
-  },
-  {
-    date: new Date(),
-    message: 'Server: This is an example message'
-  },
-  {
-    date: new Date(),
-    message: 'Server: This is an example message Server: This is an example message Server: This is an example message Server: This is an example message'
-  }
-];
+import Helper from '../helpers/GlobalHelpers';
 
 class SocketTerminal extends React.Component {
 
+  sendMessage() {
+    let messageInput = this.refs.messageText.input;
+    this.props.webSocket.send(messageInput.value);
+    messageInput.value = '';
+  }
+
   render() {
+    const disableChanges = this.props.status == ConnectionStatus.DISCONNECTED;
     return (
       <div>
         <Row className="relative-container">
           <Column xs={10}>
-            <TextField int fullWidth={true} floatingLabelText="Message"/>
+            <TextField ref="messageText" disabled={disableChanges} int fullWidth={true} floatingLabelText="Message"/>
           </Column>
-          <RaisedButton className="margin-left-15 form-bottom-element" label="Send" primary={true}/>
+          <RaisedButton disabled={disableChanges} className="margin-left-15 form-bottom-element" label="Send"
+                        primary={true} onClick={this.sendMessage.bind(this)}/>
         </Row>
-        <SocketTerminalList terminalData={terminalData} />
+        <SocketTerminalList terminalData={this.props.terminalData}/>
       </div>
     );
   }
 }
 
-export default SocketTerminal;
+function mapStateToProps(state) {
+  const socketState = state.socketContainerReducer;
+  const currentConnection = Helper.getCurrentConnection(socketState);
+  return {
+    terminalData: currentConnection.messages,
+    status: currentConnection.status,
+    parameters: currentConnection.parameters
+  }
+}
+
+export default connect(mapStateToProps)(SocketTerminal);

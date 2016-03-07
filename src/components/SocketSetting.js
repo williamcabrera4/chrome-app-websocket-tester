@@ -4,8 +4,8 @@ import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import { connect } from 'react-redux';
-import { ConnectionType } from '../constant/constant';
-import { SocketContainerAction } from '../actions/actions';
+import { ConnectionType, ConnectionStatus } from '../constant/constant';
+import { SocketContainerAction, SocketConnectionAction } from '../actions/actions';
 import Helper from '../helpers/GlobalHelpers';
 import Row from './Row';
 
@@ -25,9 +25,23 @@ class SocketSetting extends React.Component {
     });
   }
 
+  connectToWebSocket() {
+    const webSocket = this.props.webSocket;
+    if (this.props.status == ConnectionStatus.DISCONNECTED) {
+      const host = this.props.parameters.host;
+      const dispatch = this.props.dispatch;
+      webSocket.connect(host, dispatch);
+    }
+    else {
+      webSocket.close();
+    }
+  }
+
   render() {
-    const connectionTypeValue = this.props.connection.parameters.type;
-    const hostValue = this.props.connection.parameters.host;
+    const connectionTypeValue = this.props.parameters.type;
+    const hostValue = this.props.parameters.host;
+    const disableChanges = this.props.status == ConnectionStatus.CONNECTED;
+    const buttonLabel = this.props.status == ConnectionStatus.CONNECTED ? 'Disconnect' : 'Connect';
     return (
       <div>
         <Row>
@@ -35,6 +49,7 @@ class SocketSetting extends React.Component {
         </Row>
         <Row className="relative-container">
           <SelectField
+            disabled={disableChanges}
             value={connectionTypeValue}
             onChange={this.handleSelectChange.bind(this)}
             floatingLabelText="Connection Type">
@@ -42,8 +57,10 @@ class SocketSetting extends React.Component {
             <MenuItem key={2} value={ConnectionType.io} primaryText="Socket.IO"/>
           </SelectField>
           <TextField value={hostValue} className="margin-left-15" hint floatingLabelText="Location"
-                     onChange={this.handleHostChange.bind(this)}/>
-          <RaisedButton className="margin-left-15 form-bottom-element" label="Connect" primary={true}/>
+                     onChange={this.handleHostChange.bind(this)}
+                     disabled={disableChanges}/>
+          <RaisedButton className="margin-left-15 form-bottom-element" label={buttonLabel} primary={true}
+                        onClick={this.connectToWebSocket.bind(this)}/>
         </Row>
       </div>
     );
@@ -54,7 +71,8 @@ function mapStateToProps(state) {
   const socketState = state.socketContainerReducer;
   const currentConnection = Helper.getCurrentConnection(socketState);
   return {
-    connection: currentConnection
+    parameters: currentConnection.parameters,
+    status: currentConnection.status
   }
 }
 

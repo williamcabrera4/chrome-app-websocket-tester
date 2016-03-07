@@ -10,7 +10,7 @@ class TerminalListItem extends React.Component {
     return (
       <Row className="margin-top-15">
         <Column xs={3}>{dateString}</Column>
-        <Column xs={9}>{messageItem.message}</Column>
+        <Column xs={9} className={messageItem.type}>{messageItem.message}</Column>
       </Row>
     )
   }

@@ -24,7 +24,7 @@ class SocketTerminalList extends React.Component {
 
   createRow(messageItem) {
     return (
-      <TerminalListItem messageItem={messageItem} />
+      <TerminalListItem key={messageItem.key} messageItem={messageItem} />
     )
   }
 }

@@ -13,7 +13,7 @@ class Column extends React.Component {
   }
 
   generateClass() {
-    let className = '';
+    let className = this.props.className || '';
     className = this.generateClassName(className, 'xs');
     className = this.generateClassName(className, 'md');
     className = this.generateClassName(className, 'lg');
@@ -22,7 +22,7 @@ class Column extends React.Component {
 
   generateClassName(className, type) {
     if (this.props[type]) {
-      return `#{className} col-${type}-${this.props[type]}`
+      return `${className} col-${type}-${this.props[type]}`
     }
     return className;
   }
