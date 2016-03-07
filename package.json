@@ -77,6 +77,7 @@
     "react-tap-event-plugin": "^0.2.2",
     "classnames": "^2.2.3",
     "flexboxgrid": "^6.3.0",
-    "react-flexbox-grid": "^0.9.5"
+    "react-flexbox-grid": "^0.9.5",
+    "immutable": "^3.7.6"
   }
 }

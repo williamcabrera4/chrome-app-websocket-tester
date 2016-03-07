@@ -3,25 +3,31 @@ import SelectField from 'material-ui/lib/select-field';
 import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
 import MenuItem from 'material-ui/lib/menus/menu-item';
+import { connect } from 'react-redux';
+import { ConnectionType } from '../constant/constant';
+import { SocketContainerAction } from '../actions/actions';
+import Helper from '../helpers/GlobalHelpers';
 import Row from './Row';
-
-const ConnectionType = {
-  ws: 'websocket',
-  io: 'socket.io'
-};
 
 class SocketSetting extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {value: ConnectionType.ws};
+  handleSelectChange(event, index, value) {
+    this.props.dispatch({
+      type: SocketContainerAction.CHANGE_CONNECTION_TYPE,
+      value: value
+    });
   }
 
-  handleSelectChange(event, index, value) {
-    this.setState({value: value});
+  handleHostChange(event) {
+    this.props.dispatch({
+      type: SocketContainerAction.CHANGE_HOST,
+      value: event.target.value
+    });
   }
 
   render() {
+    const connectionTypeValue = this.props.connection.parameters.type;
+    const hostValue = this.props.connection.parameters.host;
     return (
       <div>
         <Row>
@@ -29,19 +35,27 @@ class SocketSetting extends React.Component {
         </Row>
         <Row className="relative-container">
           <SelectField
-            value={this.state.value}
+            value={connectionTypeValue}
             onChange={this.handleSelectChange.bind(this)}
             floatingLabelText="Connection Type">
             <MenuItem key={1} value={ConnectionType.ws} primaryText="Standard WS"/>
-            <MenuItem key={2} value={ConnectionType.io} primaryText="Socket.io"/>
+            <MenuItem key={2} value={ConnectionType.io} primaryText="Socket.IO"/>
           </SelectField>
-          <TextField className="margin-left-15" hint floatingLabelText="Location"/>
+          <TextField value={hostValue} className="margin-left-15" hint floatingLabelText="Location"
+                     onChange={this.handleHostChange.bind(this)}/>
           <RaisedButton className="margin-left-15 form-bottom-element" label="Connect" primary={true}/>
         </Row>
       </div>
     );
   }
-
 }
 
-export default SocketSetting;
+function mapStateToProps(state) {
+  const socketState = state.socketContainerReducer;
+  const currentConnection = Helper.getCurrentConnection(socketState);
+  return {
+    connection: currentConnection
+  }
+}
+
+export default connect(mapStateToProps)(SocketSetting);
