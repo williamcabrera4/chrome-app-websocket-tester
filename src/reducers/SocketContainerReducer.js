@@ -5,13 +5,25 @@ import { SocketContainerAction, SocketConnectionAction } from '../actions/action
 let messageIndex = 1;
 const defaultState = Immutable.fromJS({
   connections: [{
+    name: 'Websocket.org Echo',
     parameters: {
       host: 'ws://echo.websocket.org',
-      type: ConnectionType.ws
+      type: ConnectionType.ws,
+      channel: ''
     },
     status: ConnectionStatus.DISCONNECTED,
     messages: []
-  }],
+  },
+    {
+      name: 'Local Socket.IO',
+      parameters: {
+        host: 'http://localhost:3000',
+        type: ConnectionType.io,
+        channel: 'update'
+      },
+      status: ConnectionStatus.DISCONNECTED,
+      messages: []
+    }],
   index: 0
 });
 
@@ -21,6 +33,10 @@ function updateConnectionType(state, action) {
 
 function updateConnectionHost(state, action) {
   return updateConnectionParameter(state, action, 'host');
+}
+
+function updateConnectionChannel(state, action) {
+  return updateConnectionParameter(state, action, 'channel');
 }
 
 function updateConnectionParameter(state, action, parameter) {
@@ -33,6 +49,10 @@ function updateConnectionStatus(state, action, value) {
   const connectionIndex = state.get('index');
   const parameters = ['connections', connectionIndex, 'status'];
   return state.setIn(parameters, value);
+}
+
+function updatePlaygroundIndex(state, action) {
+  return state.set('index', action.value);
 }
 
 function updateTerminalData(state, action) {
@@ -49,16 +69,23 @@ function updateTerminalData(state, action) {
 
 export default function (state = defaultState, action) {
   switch (action.type) {
+
     case SocketContainerAction.CHANGE_CONNECTION_TYPE:
       return updateConnectionType(state, action);
     case SocketContainerAction.CHANGE_HOST:
       return updateConnectionHost(state, action);
+    case SocketContainerAction.CHANGE_CHANNEL:
+      return updateConnectionChannel(state, action);
+    case SocketContainerAction.UPDATE_INDEX:
+      return updatePlaygroundIndex(state, action);
+
     case SocketConnectionAction.CONNECTED:
       return updateConnectionStatus(state, action, ConnectionStatus.CONNECTED);
     case SocketConnectionAction.DISCONNECT:
       return updateConnectionStatus(state, action, ConnectionStatus.DISCONNECTED);
     case SocketConnectionAction.RECEIVED:
       return updateTerminalData(state, action);
+
     default:
       return defaultState
   }

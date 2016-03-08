@@ -4,6 +4,14 @@ const getCurrentConnection = (state) => {
   return connections.get(currentIndex).toJS();
 };
 
+const formatMessage = (message) => {
+  if (typeof message === 'object') {
+    return JSON.stringify(message);
+  }
+  return message;
+};
+
 export default {
-  getCurrentConnection: getCurrentConnection
+  getCurrentConnection: getCurrentConnection,
+  formatMessage: formatMessage
 };

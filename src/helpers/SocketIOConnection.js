@@ -1,18 +1,19 @@
+import * as io from 'socket.io-client';
 import { SocketConnectionAction } from '../actions/actions';
 import { MessageType } from '../constant/constant';
-import getCloseReason from './WebSocketErrorMessages';
 import Helper from '../helpers/GlobalHelpers';
 
-class WebSocketConnection {
+class SocketIOConnection {
 
-  connect(wsUri, dispatch) {
-    this.websocket = new WebSocket(wsUri);
+  connect(wsUri, dispatch, channel) {
+    this.websocket = io.connect(wsUri);
     this.dispatch = dispatch;
+    this.channel = channel;
     this.setListeners();
   }
 
   send(message) {
-    this.websocket.send(message);
+    this.websocket.emit(this.channel, message);
     this.dispatch({
       type: SocketConnectionAction.RECEIVED,
       value: `CLIENT: ${message}`,
@@ -21,9 +22,9 @@ class WebSocketConnection {
   }
 
   setListeners() {
-    this.websocket.onopen = this.onOpen.bind(this);
-    this.websocket.onmessage = this.onMessage.bind(this);
-    this.websocket.onclose = this.onClose.bind(this);
+    this.websocket.on('connect', this.onOpen.bind(this));
+    this.websocket.on('disconnect', this.onClose.bind(this));
+    this.websocket.on(this.channel, this.onMessage.bind(this));
   }
 
   onOpen() {
@@ -37,8 +38,8 @@ class WebSocketConnection {
     });
   }
 
-  onMessage(event) {
-    const message = Helper.formatMessage(event.data);
+  onMessage(rawMessage) {
+    const message = Helper.formatMessage(rawMessage);
     this.dispatch({
       type: SocketConnectionAction.RECEIVED,
       value: `SERVER: ${message}`,
@@ -46,7 +47,7 @@ class WebSocketConnection {
     });
   }
 
-  onClose(event) {
+  onClose() {
     this.dispatch({
       type: SocketConnectionAction.DISCONNECT
     });
@@ -55,19 +56,11 @@ class WebSocketConnection {
       value: 'STATUS: DISCONNECTED',
       messageType: MessageType.STATUS
     });
-    if (event.code != 1005) {
-      const reason = getCloseReason(event);
-      this.dispatch({
-        type: SocketConnectionAction.RECEIVED,
-        value: `ERROR: ${reason}`,
-        messageType: MessageType.ERROR
-      });
-    }
   }
 
   close() {
-    this.websocket.close();
+    this.websocket.disconnect();
   }
 }
 
-export default WebSocketConnection;
+export default SocketIOConnection;

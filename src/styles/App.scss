@@ -16,6 +16,24 @@
   color: #795548;
 }
 
+.selected-item {
+  background-color: #ccc;
+}
+
+.terminal-container {
+  height: 290px;
+  overflow: scroll;
+  padding-bottom: 20px;
+}
+
+.padding-left-30 {
+  padding-left: 30px;
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
 .margin-bottom-0 {
   margin-bottom: 0;
 }

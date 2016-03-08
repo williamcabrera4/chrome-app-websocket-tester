@@ -17,14 +17,16 @@ class SocketTerminalList extends React.Component {
             <b>Message:</b>
           </Column>
         </Row>
-        {terminalItems}
+        <div className="terminal-container">
+          {terminalItems}
+        </div>
       </div>
     );
   }
 
   createRow(messageItem) {
     return (
-      <TerminalListItem key={messageItem.key} messageItem={messageItem} />
+      <TerminalListItem key={messageItem.key} messageItem={messageItem}/>
     )
   }
 }

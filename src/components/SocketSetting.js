@@ -25,27 +25,54 @@ class SocketSetting extends React.Component {
     });
   }
 
+  handleChannelChange(event) {
+    this.props.dispatch({
+      type: SocketContainerAction.CHANGE_CHANNEL,
+      value: event.target.value
+    });
+  }
+
   connectToWebSocket() {
     const webSocket = this.props.webSocket;
     if (this.props.status == ConnectionStatus.DISCONNECTED) {
       const host = this.props.parameters.host;
       const dispatch = this.props.dispatch;
-      webSocket.connect(host, dispatch);
+      const channel = this.props.parameters.channel;
+      webSocket.connect(host, dispatch, channel);
     }
     else {
       webSocket.close();
     }
   }
 
+  generateChannelInput(disableChanges) {
+    if (this.props.parameters.type != ConnectionType.io) {
+      return;
+    }
+    const channelValue = this.props.parameters.channel;
+    return (
+      <div>
+        <Row >
+          <TextField value={channelValue} hint floatingLabelText="Channel"
+                     onChange={this.handleChannelChange.bind(this)}
+                     disabled={disableChanges}/>
+        </Row>
+      </div>
+    )
+  }
+
   render() {
+    const connectionName = this.props.name;
     const connectionTypeValue = this.props.parameters.type;
     const hostValue = this.props.parameters.host;
     const disableChanges = this.props.status == ConnectionStatus.CONNECTED;
     const buttonLabel = this.props.status == ConnectionStatus.CONNECTED ? 'Disconnect' : 'Connect';
+    const channelInput = this.generateChannelInput(disableChanges);
+
     return (
       <div>
         <Row>
-          <h2 className="margin-bottom-0">Websocket Settings</h2>
+          <h2 className="margin-bottom-0">Websocket Settings: {connectionName}</h2>
         </Row>
         <Row className="relative-container">
           <SelectField
@@ -62,6 +89,7 @@ class SocketSetting extends React.Component {
           <RaisedButton className="margin-left-15 form-bottom-element" label={buttonLabel} primary={true}
                         onClick={this.connectToWebSocket.bind(this)}/>
         </Row>
+        {channelInput}
       </div>
     );
   }
@@ -71,6 +99,7 @@ function mapStateToProps(state) {
   const socketState = state.socketContainerReducer;
   const currentConnection = Helper.getCurrentConnection(socketState);
   return {
+    name: currentConnection.name,
     parameters: currentConnection.parameters,
     status: currentConnection.status
   }
