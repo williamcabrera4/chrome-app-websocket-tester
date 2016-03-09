@@ -3,7 +3,8 @@ export const SocketContainerAction = {
   CHANGE_CONNECTION_TYPE: 'change-connection-type',
   CHANGE_HOST: 'change-host',
   CHANGE_CHANNEL: 'change-channel',
-  UPDATE_INDEX: 'update-playground-index'
+  UPDATE_INDEX: 'update-playground-index',
+  ADD_CONNECTION: 'add-connection'
 };
 
 export const SocketConnectionAction = {

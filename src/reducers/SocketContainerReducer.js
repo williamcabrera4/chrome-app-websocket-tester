@@ -51,6 +51,21 @@ function updateConnectionStatus(state, action, value) {
   return state.setIn(parameters, value);
 }
 
+function addConnection(state, action) {
+  const connectionParameters = Immutable.fromJS({
+    name: action.value,
+    parameters: {
+      host: '',
+      type: ConnectionType.ws,
+      channel: ''
+    },
+    status: ConnectionStatus.DISCONNECTED,
+    messages: []
+  });
+  const parameters = ['connections'];
+  return state.updateIn(parameters, array => array.push(connectionParameters));
+}
+
 function updatePlaygroundIndex(state, action) {
   return state.set('index', action.value);
 }
@@ -78,6 +93,8 @@ export default function (state = defaultState, action) {
       return updateConnectionChannel(state, action);
     case SocketContainerAction.UPDATE_INDEX:
       return updatePlaygroundIndex(state, action);
+    case SocketContainerAction.ADD_CONNECTION:
+      return addConnection(state, action);
 
     case SocketConnectionAction.CONNECTED:
       return updateConnectionStatus(state, action, ConnectionStatus.CONNECTED);

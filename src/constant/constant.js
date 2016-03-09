@@ -15,3 +15,5 @@ export const MessageType = {
   ERROR: 'error-message',
   STATUS: 'status-message'
 };
+
+export const REPOSITORY_URL = 'https://github.com/williamcabrera4';

@@ -18,16 +18,19 @@ class SocketTerminal extends React.Component {
 
   render() {
     const disableChanges = this.props.status == ConnectionStatus.DISCONNECTED;
+    const connectionType = this.props.parameters.type;
     return (
       <div>
         <Row className="relative-container">
-          <Column xs={10}>
+          <Column xs={9}>
             <TextField ref="messageText" disabled={disableChanges} int fullWidth={true} floatingLabelText="Message"/>
           </Column>
-          <RaisedButton disabled={disableChanges} className="margin-left-15 form-bottom-element" label="Send"
-                        primary={true} onClick={this.sendMessage.bind(this)}/>
+          <Column xs={2}>
+            <RaisedButton disabled={disableChanges} className="form-bottom-element" label="Send"
+                          primary={true} onClick={this.sendMessage.bind(this)}/>
+          </Column>
         </Row>
-        <SocketTerminalList terminalData={this.props.terminalData}/>
+        <SocketTerminalList connectionType={connectionType} terminalData={this.props.terminalData}/>
       </div>
     );
   }

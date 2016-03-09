@@ -16,14 +16,23 @@
   color: #795548;
 }
 
+.highlight-title {
+  color: #795548;
+  font-weight: 500;
+}
+
 .selected-item {
   background-color: #ccc;
 }
 
-.terminal-container {
-  height: 290px;
+.full-height {
   overflow: scroll;
-  padding-bottom: 20px;
+  margin-right: 1px;
+  padding-bottom: 10px;
+}
+
+.full-width {
+  width: 100%;
 }
 
 .padding-left-30 {
