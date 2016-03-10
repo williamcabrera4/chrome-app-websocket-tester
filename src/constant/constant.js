@@ -16,4 +16,4 @@ export const MessageType = {
   STATUS: 'status-message'
 };
 
-export const REPOSITORY_URL = 'https://github.com/williamcabrera4';
+export const REPOSITORY_URL = 'https://github.com/williamcabrera4/chrome-app-websocket-tester';

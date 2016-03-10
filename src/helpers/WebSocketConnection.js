@@ -6,6 +6,9 @@ import Helper from '../helpers/GlobalHelpers';
 class WebSocketConnection {
 
   connect(wsUri, dispatch) {
+    if (!(wsUri.indexOf('ws://') == 0 || wsUri.indexOf('wss://') == 0)) {
+      wsUri = `ws://${wsUri}`;
+    }
     this.websocket = new WebSocket(wsUri);
     this.dispatch = dispatch;
     this.setListeners();

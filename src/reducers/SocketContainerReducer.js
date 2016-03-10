@@ -79,6 +79,10 @@ function removeConnection(state, action) {
   }
   const connectionIndex = state.get('index');
   const parameters = ['connections'];
+  if (size == connectionIndex + 1) {
+    let newState = state.updateIn(parameters, array => array.remove(connectionIndex));
+    return newState.set('index', connectionIndex - 1);
+  }
   return state.updateIn(parameters, array => array.remove(connectionIndex));
 }
 
