@@ -13,17 +13,21 @@ const defaultState = Immutable.fromJS({
     },
     status: ConnectionStatus.DISCONNECTED,
     messages: []
-  },
-    {
-      name: 'Local Socket.IO',
-      parameters: {
-        host: 'http://localhost:3000',
-        type: ConnectionType.io,
-        channel: 'update'
-      },
-      status: ConnectionStatus.DISCONNECTED,
-      messages: []
-    }],
+  }],
+  index: 0
+});
+
+const emptyState = Immutable.fromJS({
+  connections: [{
+    name: 'Default',
+    parameters: {
+      host: '',
+      type: ConnectionType.ws,
+      channel: ''
+    },
+    status: ConnectionStatus.DISCONNECTED,
+    messages: []
+  }],
   index: 0
 });
 
@@ -52,6 +56,7 @@ function updateConnectionStatus(state, action, value) {
 }
 
 function addConnection(state, action) {
+  const connectionIndex = state.get('index');
   const connectionParameters = Immutable.fromJS({
     name: action.value,
     parameters: {
@@ -63,7 +68,18 @@ function addConnection(state, action) {
     messages: []
   });
   const parameters = ['connections'];
-  return state.updateIn(parameters, array => array.push(connectionParameters));
+  let newState = state.updateIn(parameters, array => array.push(connectionParameters));
+  return newState.set('index', connectionIndex + 1);
+}
+
+function removeConnection(state, action) {
+  const size = state.get('connections').size;
+  if (size == 1) {
+    return emptyState;
+  }
+  const connectionIndex = state.get('index');
+  const parameters = ['connections'];
+  return state.updateIn(parameters, array => array.remove(connectionIndex));
 }
 
 function updatePlaygroundIndex(state, action) {
@@ -82,6 +98,12 @@ function updateTerminalData(state, action) {
   return state.updateIn(parameters, array => array.push(message));
 }
 
+function deleteTerminalMessages(state, action) {
+  const connectionIndex = state.get('index');
+  const parameters = ['connections', connectionIndex, 'messages'];
+  return state.updateIn(parameters, array => array.clear());
+}
+
 export default function (state = defaultState, action) {
   switch (action.type) {
 
@@ -95,6 +117,10 @@ export default function (state = defaultState, action) {
       return updatePlaygroundIndex(state, action);
     case SocketContainerAction.ADD_CONNECTION:
       return addConnection(state, action);
+    case SocketContainerAction.DELETE_TERMINAL_MESSAGES:
+      return deleteTerminalMessages(state, action);
+    case SocketContainerAction.REMOVE_CONNECTION:
+      return removeConnection(state, action);
 
     case SocketConnectionAction.CONNECTED:
       return updateConnectionStatus(state, action, ConnectionStatus.CONNECTED);

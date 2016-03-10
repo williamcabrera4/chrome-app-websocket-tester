@@ -4,7 +4,9 @@ export const SocketContainerAction = {
   CHANGE_HOST: 'change-host',
   CHANGE_CHANNEL: 'change-channel',
   UPDATE_INDEX: 'update-playground-index',
-  ADD_CONNECTION: 'add-connection'
+  ADD_CONNECTION: 'add-connection',
+  DELETE_TERMINAL_MESSAGES: 'delete-terminal-messages',
+  REMOVE_CONNECTION: 'remove-connection'
 };
 
 export const SocketConnectionAction = {

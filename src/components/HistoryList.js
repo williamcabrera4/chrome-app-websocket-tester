@@ -18,7 +18,9 @@ class HistoryList extends React.Component {
     super(props);
     this.state = {
       connectionStatusDialog: false,
-      addConnectionDialog: false
+      addConnectionDialog: false,
+      connectionErrorMessage: '',
+      connectionName: ''
     };
   }
 
@@ -31,7 +33,10 @@ class HistoryList extends React.Component {
   };
 
   handleAddConnectionOpen() {
-    this.setState({addConnectionDialog: true});
+    this.setState({
+      addConnectionDialog: true,
+      connectionErrorMessage: ''
+    });
   };
 
   handleAddConnectionClose() {
@@ -40,11 +45,21 @@ class HistoryList extends React.Component {
 
   addConnection() {
     const connectionName = this.refs.connectionName.input.value;
+    if (connectionName === '') {
+      this.setState({connectionErrorMessage: 'This field is required'});
+      return;
+    }
     this.props.dispatch({
       type: SocketContainerAction.ADD_CONNECTION,
       value: connectionName
     });
     this.handleAddConnectionClose();
+  }
+
+  newConnectionTextListener(event) {
+    if (event.keyCode == 13) {
+      this.addConnection();
+    }
   }
 
   render() {
@@ -93,7 +108,10 @@ class HistoryList extends React.Component {
           actions={addConnectionActions}
           open={this.state.addConnectionDialog}
           onRequestClose={this.handleAddConnectionClose.bind(this)}>
-          <TextField ref="connectionName" hint floatingLabelText="Connection Name"/>
+          <TextField onKeyUp={this.newConnectionTextListener.bind(this)}
+                     ref="connectionName" hint floatingLabelText="Connection Name"
+                     errorText={this.state.connectionErrorMessage}
+          />
         </Dialog>
       </List>
     );

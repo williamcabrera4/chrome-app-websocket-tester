@@ -25,11 +25,11 @@ class AppComponent extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.forceUpdate.bind(this));
+    window.addEventListener('resize', () => this.listHeight());
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.listHeight.bind(this));
+    window.removeEventListener('resize', () => this.listHeight());
   }
 
   render() {

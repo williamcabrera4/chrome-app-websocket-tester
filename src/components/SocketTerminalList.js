@@ -9,11 +9,11 @@ import Helper from '../helpers/GlobalHelpers';
 class SocketTerminalList extends React.Component {
 
   componentDidMount() {
-    window.addEventListener('resize', this.forceUpdate.bind(this));
+    window.addEventListener('resize', () => this.forceUpdate());
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.forceUpdate.bind(this));
+    window.removeEventListener('resize', () => this.forceUpdate());
   }
 
   render() {

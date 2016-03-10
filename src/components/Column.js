@@ -6,7 +6,7 @@ class Column extends React.Component {
   render() {
     const className = this.generateClass();
     return (
-      <div className={className}>
+      <div className={className} style={this.props.style}>
         {this.props.children}
       </div>
     );
