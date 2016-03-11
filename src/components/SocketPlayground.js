@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Paper from 'material-ui/lib/paper'
-import { ConnectionType } from '../constant/constant';
+import { ConnectionType } from '../constant/Constants';
 import Helper from '../helpers/GlobalHelpers';
 import SocketSetting from './SocketSetting';
 import SocketTerminal from './SocketTerminal';

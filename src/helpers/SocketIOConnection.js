@@ -1,6 +1,6 @@
 import * as io from 'socket.io-client';
-import { SocketConnectionAction } from '../actions/actions';
-import { MessageType } from '../constant/constant';
+import { SocketConnectionAction } from '../actions/ActionsType';
+import { MessageType } from '../constant/Constants';
 import Helper from '../helpers/GlobalHelpers';
 
 class SocketIOConnection {

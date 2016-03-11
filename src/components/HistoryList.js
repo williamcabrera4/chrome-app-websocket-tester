@@ -9,8 +9,8 @@ import ArrowIcon from 'material-ui/lib/svg-icons/action/compare-arrows';
 import Dialog from 'material-ui/lib/dialog';
 import TextField from 'material-ui/lib/text-field';
 import Helper from '../helpers/GlobalHelpers';
-import { ConnectionStatus } from '../constant/constant';
-import { SocketContainerAction } from '../actions/actions';
+import { ConnectionStatus } from '../constant/Constants';
+import { SocketContainerAction } from '../actions/ActionsType';
 
 class HistoryList extends React.Component {
 

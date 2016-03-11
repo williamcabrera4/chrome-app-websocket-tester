@@ -1,6 +1,6 @@
 {
-  "name": "Websocket Tester",
-  "version": "0.1",
+  "name": "Websocket-Tester",
+  "version": "0.0.1",
   "description": "Test WebSocket created by the WebSocket API and the Socket.IO API.",
   "main": "",
   "scripts": {

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Row from './Row';
 import Column from './Column';
 import TerminalListItem from './TerminalListItem';
-import { ConnectionType } from '../constant/constant';
+import { ConnectionType } from '../constant/Constants';
 import Helper from '../helpers/GlobalHelpers';
 
 class SocketTerminalList extends React.Component {

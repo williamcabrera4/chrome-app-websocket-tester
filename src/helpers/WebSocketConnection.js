@@ -1,5 +1,5 @@
-import { SocketConnectionAction } from '../actions/actions';
-import { MessageType } from '../constant/constant';
+import { SocketConnectionAction } from '../actions/ActionsType';
+import { MessageType } from '../constant/Constants';
 import getCloseReason from './WebSocketErrorMessages';
 import Helper from '../helpers/GlobalHelpers';
 
