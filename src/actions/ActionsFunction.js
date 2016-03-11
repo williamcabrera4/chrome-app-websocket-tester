@@ -1,7 +1,20 @@
 import Immutable from 'immutable'
-import { ConnectionType, ConnectionStatus } from '../constant/Constants'
+import { ConnectionType, ConnectionStatus } from '../constant/Constants';
+import Helper from '../helpers/GlobalHelpers';
 
-let messageIndex = 1;
+const defaultState = Immutable.fromJS({
+  connections: [{
+    name: 'Websocket.org Echo',
+    parameters: {
+      host: 'ws://echo.websocket.org',
+      type: ConnectionType.ws,
+      channel: ''
+    },
+    status: ConnectionStatus.DISCONNECTED,
+    messages: []
+  }],
+  index: 0
+});
 
 const emptyState = Immutable.fromJS({
   connections: [{
@@ -55,7 +68,11 @@ function addConnection(state, action) {
   });
   const parameters = ['connections'];
   let newState = state.updateIn(parameters, array => array.push(connectionParameters));
-  return newState.set('index', connectionIndex + 1);
+  const currentConnection = Helper.getCurrentConnection(state);
+  if (currentConnection.status == ConnectionStatus.DISCONNECTED) {
+    newState = newState.set('index', state.get('connections').size);
+  }
+  return newState
 }
 
 function removeConnection(state, action) {
@@ -79,7 +96,7 @@ function updatePlaygroundIndex(state, action) {
 function updateTerminalData(state, action) {
   const connectionIndex = state.get('index');
   const message = {
-    key: messageIndex++,
+    key: new Date().getTime(),
     date: new Date(),
     message: action.value,
     type: action.messageType
@@ -92,6 +109,17 @@ function deleteTerminalMessages(state, action) {
   const connectionIndex = state.get('index');
   const parameters = ['connections', connectionIndex, 'messages'];
   return state.updateIn(parameters, array => array.clear());
+}
+
+function setOfflineState(state, action) {
+  if (typeof action.value === 'undefined' || action.value === null) {
+    return defaultState;
+  }
+  return Immutable.fromJS(action.value);
+}
+
+function getDefaultState() {
+  return defaultState;
 }
 
 export const ContainerFunctions = {
@@ -107,4 +135,9 @@ export const ContainerFunctions = {
 
 export const ConnectionFunctions = {
   updateConnectionStatus
+};
+
+export const StorageFunctions = {
+  setOfflineState,
+  getDefaultState
 };

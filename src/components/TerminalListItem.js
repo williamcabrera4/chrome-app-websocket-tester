@@ -7,7 +7,7 @@ class TerminalListItem extends React.Component {
   render() {
     const messageItem = this.props.messageItem;
     const messageStyle = `selectable-text ${messageItem.type}`;
-    const dateString = messageItem.date.toTimeString();
+    const dateString = new Date(messageItem.date).toTimeString();
     return (
       <Row className="margin-top-15">
         <Column xs={3}>{dateString}</Column>

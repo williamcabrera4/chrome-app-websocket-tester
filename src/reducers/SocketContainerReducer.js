@@ -1,24 +1,11 @@
-import Immutable from 'immutable'
-import { ConnectionType, ConnectionStatus, MessageType } from '../constant/Constants'
-import { SocketContainerAction, SocketConnectionAction } from '../actions/ActionsType';
-import { ConnectionFunctions, ContainerFunctions } from '../actions/ActionsFunction';
+import Immutable from 'immutable';
+import { ConnectionType, ConnectionStatus, MessageType } from '../constant/Constants';
+import { SocketContainerAction, SocketConnectionAction, StorageAction } from '../actions/ActionsType';
+import { ConnectionFunctions, ContainerFunctions, StorageFunctions } from '../actions/ActionsFunction';
 
-const defaultState = Immutable.fromJS({
-  connections: [{
-    name: 'Websocket.org Echo',
-    parameters: {
-      host: 'ws://echo.websocket.org',
-      type: ConnectionType.ws,
-      channel: ''
-    },
-    status: ConnectionStatus.DISCONNECTED,
-    messages: []
-  }],
-  index: 0
-});
-
-export default function (state = defaultState, action) {
+export default function (state = StorageFunctions.getDefaultState(), action) {
   switch (action.type) {
+
     case SocketContainerAction.CHANGE_CONNECTION_TYPE:
       return ContainerFunctions.updateConnectionType(state, action);
     case SocketContainerAction.CHANGE_HOST:
@@ -41,7 +28,10 @@ export default function (state = defaultState, action) {
     case SocketConnectionAction.RECEIVED:
       return ContainerFunctions.updateTerminalData(state, action);
 
+    case StorageAction.READ_OFFLINE:
+      return StorageFunctions.setOfflineState(state, action);
+
     default:
-      return defaultState
+      return state;
   }
 }

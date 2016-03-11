@@ -7,6 +7,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
 import App from './components/Main';
 import makeStore from './stores/AppStore';
+import StoreHelper from './helpers/StorageHelper';
+import { StorageAction } from './actions/ActionsType';
 
 // Needed for onTouchTap
 // Can go away when react 1.0 release
@@ -15,6 +17,11 @@ import makeStore from './stores/AppStore';
 injectTapEventPlugin();
 
 const store = makeStore();
+
+const storeHelper = new StoreHelper(store);
+storeHelper.init();
+storeHelper.readState((offlineState) =>
+  store.dispatch({type: StorageAction.READ_OFFLINE, value: offlineState}));
 
 // Render the main component into the dom
 ReactDOM.render(

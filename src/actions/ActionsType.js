@@ -15,3 +15,7 @@ export const SocketConnectionAction = {
   SEND: 'socket-connection-send',
   RECEIVED: 'socket-connection-received'
 };
+
+export const StorageAction = {
+  READ_OFFLINE: 'read-offline-state'
+};
