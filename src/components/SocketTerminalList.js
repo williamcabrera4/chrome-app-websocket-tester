@@ -16,10 +16,14 @@ class SocketTerminalList extends React.Component {
     window.removeEventListener('resize', () => this.forceUpdate());
   }
 
+  createRow(messageItem) {
+    return <TerminalListItem key={messageItem.key} messageItem={messageItem} />;
+  }
+
   render() {
-    const offset = this.props.connectionType == ConnectionType.ws ? 305 : 377;
+    const offset = this.props.connectionType === ConnectionType.ws ? 305 : 377;
     const terminalHeight = window.innerHeight - offset;
-    const terminalStyle = {height: terminalHeight};
+    const terminalStyle = { height: terminalHeight };
     const terminalItems = this.props.terminalData.map(messageItem => this.createRow(messageItem));
     return (
       <div>
@@ -31,27 +35,25 @@ class SocketTerminalList extends React.Component {
             <b>Message:</b>
           </Column>
         </Row>
-        <div className="full-height"
-             style={terminalStyle}>
+        <div className="full-height" style={terminalStyle}>
           {terminalItems}
         </div>
       </div>
     );
   }
-
-  createRow(messageItem) {
-    return (
-      <TerminalListItem key={messageItem.key} messageItem={messageItem}/>
-    )
-  }
 }
+
+SocketTerminalList.propTypes = {
+  connectionType: React.PropTypes.string,
+  terminalData: React.PropTypes.array,
+};
 
 function mapStateToProps(state) {
   const socketState = state.socketContainerReducer;
   const currentConnection = Helper.getCurrentConnection(socketState);
   return {
-    connectionType: currentConnection.parameters.type
-  }
+    connectionType: currentConnection.parameters.type,
+  };
 }
 
 export default connect(mapStateToProps)(SocketTerminalList);

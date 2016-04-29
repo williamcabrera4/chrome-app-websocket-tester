@@ -1,7 +1,7 @@
 import React from 'react';
 import AppBar from 'material-ui/lib/app-bar';
 import FlatButton from 'material-ui/lib/flat-button';
-import { REPOSITORY_URL } from '../constant/Constants'
+import { REPOSITORY_URL } from '../constant/Constants';
 
 class SocketPlaygroundBar extends React.Component {
 
@@ -10,11 +10,12 @@ class SocketPlaygroundBar extends React.Component {
   }
 
   render() {
-    const codeIcon = <FlatButton label="View on Github" onClick={this.openRepository}/>;
+    const codeIcon = <FlatButton label="View on Github" onClick={this.openRepository} />;
     return (
-      <AppBar title="WebSocket Tester"
-              showMenuIconButton={false}
-              iconElementRight={codeIcon}
+      <AppBar
+        title="WebSocket Tester"
+        showMenuIconButton={false}
+        iconElementRight={codeIcon}
       />
     );
   }

@@ -12,6 +12,6 @@ const formatMessage = (message) => {
 };
 
 export default {
-  getCurrentConnection: getCurrentConnection,
-  formatMessage: formatMessage
+  getCurrentConnection,
+  formatMessage,
 };

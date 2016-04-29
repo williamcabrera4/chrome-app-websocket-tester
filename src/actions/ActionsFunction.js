@@ -1,4 +1,4 @@
-import Immutable from 'immutable'
+import Immutable from 'immutable';
 import { ConnectionType, ConnectionStatus } from '../constant/Constants';
 import Helper from '../helpers/GlobalHelpers';
 
@@ -8,12 +8,12 @@ const defaultState = Immutable.fromJS({
     parameters: {
       host: 'ws://echo.websocket.org',
       type: ConnectionType.ws,
-      channel: ''
+      channel: '',
     },
     status: ConnectionStatus.DISCONNECTED,
-    messages: []
+    messages: [],
   }],
-  index: 0
+  index: 0,
 });
 
 const emptyState = Immutable.fromJS({
@@ -22,13 +22,19 @@ const emptyState = Immutable.fromJS({
     parameters: {
       host: '',
       type: ConnectionType.ws,
-      channel: ''
+      channel: '',
     },
     status: ConnectionStatus.DISCONNECTED,
-    messages: []
+    messages: [],
   }],
-  index: 0
+  index: 0,
 });
+
+function updateConnectionParameter(state, action, parameter) {
+  const connectionIndex = state.get('index');
+  const parameters = ['connections', connectionIndex, 'parameters', parameter];
+  return state.setIn(parameters, action.value);
+}
 
 function updateConnectionType(state, action) {
   return updateConnectionParameter(state, action, 'type');
@@ -42,12 +48,6 @@ function updateConnectionChannel(state, action) {
   return updateConnectionParameter(state, action, 'channel');
 }
 
-function updateConnectionParameter(state, action, parameter) {
-  const connectionIndex = state.get('index');
-  const parameters = ['connections', connectionIndex, 'parameters', parameter];
-  return state.setIn(parameters, action.value);
-}
-
 function updateConnectionStatus(state, action, value) {
   const connectionIndex = state.get('index');
   const parameters = ['connections', connectionIndex, 'status'];
@@ -55,35 +55,34 @@ function updateConnectionStatus(state, action, value) {
 }
 
 function addConnection(state, action) {
-  const connectionIndex = state.get('index');
   const connectionParameters = Immutable.fromJS({
     name: action.value,
     parameters: {
       host: '',
       type: ConnectionType.ws,
-      channel: ''
+      channel: '',
     },
     status: ConnectionStatus.DISCONNECTED,
-    messages: []
+    messages: [],
   });
   const parameters = ['connections'];
   let newState = state.updateIn(parameters, array => array.push(connectionParameters));
   const currentConnection = Helper.getCurrentConnection(state);
-  if (currentConnection.status == ConnectionStatus.DISCONNECTED) {
+  if (currentConnection.status === ConnectionStatus.DISCONNECTED) {
     newState = newState.set('index', state.get('connections').size);
   }
-  return newState
+  return newState;
 }
 
-function removeConnection(state, action) {
+function removeConnection(state) {
   const size = state.get('connections').size;
-  if (size == 1) {
+  if (size === 1) {
     return emptyState;
   }
   const connectionIndex = state.get('index');
   const parameters = ['connections'];
-  if (size == connectionIndex + 1) {
-    let newState = state.updateIn(parameters, array => array.remove(connectionIndex));
+  if (size === connectionIndex + 1) {
+    const newState = state.updateIn(parameters, array => array.remove(connectionIndex));
     return newState.set('index', connectionIndex - 1);
   }
   return state.updateIn(parameters, array => array.remove(connectionIndex));
@@ -99,13 +98,13 @@ function updateTerminalData(state, action) {
     key: new Date().getTime(),
     date: new Date(),
     message: action.value,
-    type: action.messageType
+    type: action.messageType,
   };
   const parameters = ['connections', connectionIndex, 'messages'];
   return state.updateIn(parameters, array => array.push(message));
 }
 
-function deleteTerminalMessages(state, action) {
+function deleteTerminalMessages(state) {
   const connectionIndex = state.get('index');
   const parameters = ['connections', connectionIndex, 'messages'];
   return state.updateIn(parameters, array => array.clear());
@@ -130,14 +129,14 @@ export const ContainerFunctions = {
   removeConnection,
   updatePlaygroundIndex,
   updateTerminalData,
-  deleteTerminalMessages
+  deleteTerminalMessages,
 };
 
 export const ConnectionFunctions = {
-  updateConnectionStatus
+  updateConnectionStatus,
 };
 
 export const StorageFunctions = {
   setOfflineState,
-  getDefaultState
+  getDefaultState,
 };

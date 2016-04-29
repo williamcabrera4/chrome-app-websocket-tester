@@ -17,7 +17,7 @@ class SocketIOConnection {
     this.dispatch({
       type: SocketConnectionAction.RECEIVED,
       value: `CLIENT: ${message}`,
-      messageType: MessageType.CLIENT
+      messageType: MessageType.CLIENT,
     });
   }
 
@@ -29,12 +29,12 @@ class SocketIOConnection {
 
   onOpen() {
     this.dispatch({
-      type: SocketConnectionAction.CONNECTED
+      type: SocketConnectionAction.CONNECTED,
     });
     this.dispatch({
       type: SocketConnectionAction.RECEIVED,
       value: 'STATUS: CONNECTED',
-      messageType: MessageType.STATUS
+      messageType: MessageType.STATUS,
     });
   }
 
@@ -43,18 +43,18 @@ class SocketIOConnection {
     this.dispatch({
       type: SocketConnectionAction.RECEIVED,
       value: `SERVER: ${message}`,
-      messageType: MessageType.SERVER
+      messageType: MessageType.SERVER,
     });
   }
 
   onClose() {
     this.dispatch({
-      type: SocketConnectionAction.DISCONNECT
+      type: SocketConnectionAction.DISCONNECT,
     });
     this.dispatch({
       type: SocketConnectionAction.RECEIVED,
       value: 'STATUS: DISCONNECTED',
-      messageType: MessageType.STATUS
+      messageType: MessageType.STATUS,
     });
   }
 

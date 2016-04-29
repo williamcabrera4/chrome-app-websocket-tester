@@ -1,25 +1,26 @@
-let storageProxy = {
-  setItem: (key, value) => {},
-  getItem: (key, callback) => {}
+/* global chrome */
+
+const storageProxy = {
+  setItem: () => {},
+  getItem: () => {},
 };
 
 if (typeof chrome.storage !== 'undefined') {
   storageProxy.setItem = (key, value) => {
-    let storageObject = {};
+    const storageObject = {};
     storageObject[key] = value;
     chrome.storage.local.set(storageObject);
   };
-  storageProxy.getItem = (key, callback) => chrome.storage.local.get(key, function (value) {
+  storageProxy.getItem = (key, callback) => chrome.storage.local.get(key, (value) => {
     const stateObject = JSON.parse(value[key]);
     callback(stateObject);
   });
-}
-else if (typeof window.localStorage !== 'undefined') {
+} else if (typeof window.localStorage !== 'undefined') {
   storageProxy.setItem = (key, value) => window.localStorage.setItem(key, value);
   storageProxy.getItem = (key, callback) => {
     const value = window.localStorage.getItem(key);
     const stateObject = JSON.parse(value);
-    callback(stateObject)
+    callback(stateObject);
   };
 }
 

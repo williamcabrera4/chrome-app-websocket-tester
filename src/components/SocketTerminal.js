@@ -12,24 +12,6 @@ import Helper from '../helpers/GlobalHelpers';
 
 class SocketTerminal extends React.Component {
 
-  sendMessage() {
-    let messageInput = this.refs.messageText.input;
-    this.props.webSocket.send(messageInput.value);
-    messageInput.value = '';
-  }
-
-  clearMessages() {
-    this.props.dispatch({
-      type: SocketContainerAction.DELETE_TERMINAL_MESSAGES
-    });
-  }
-
-  messageTextFieldListener(event) {
-    if (event.keyCode == 13) {
-      this.sendMessage();
-    }
-  }
-
   componentDidUpdate() {
     const terminalComponent = this.refs.terminalList;
     if (typeof terminalComponent !== 'undefined') {
@@ -38,30 +20,62 @@ class SocketTerminal extends React.Component {
     }
   }
 
+  sendMessage() {
+    const messageInput = this.refs.messageText.input;
+    this.props.webSocket.send(messageInput.value);
+    messageInput.value = '';
+  }
+
+  clearMessages() {
+    this.props.dispatch({
+      type: SocketContainerAction.DELETE_TERMINAL_MESSAGES,
+    });
+  }
+
+  messageTextFieldListener(event) {
+    if (event.keyCode === 13) {
+      this.sendMessage();
+    }
+  }
+
   render() {
-    const disableChanges = this.props.status == ConnectionStatus.DISCONNECTED;
+    const disableChanges = this.props.status === ConnectionStatus.DISCONNECTED;
     const clearDisable = this.props.terminalData.length < 1;
     const connectionType = this.props.parameters.type;
     return (
       <div>
         <Row className="relative-container">
           <Column xs={8}>
-            <TextField ref="messageText" disabled={disableChanges} int fullWidth={true} floatingLabelText="Message"
-                       onKeyUp={this.messageTextFieldListener.bind(this)}/>
+            <TextField ref="messageText" disabled={disableChanges}
+              int fullWidth floatingLabelText="Message"
+              onKeyUp={(event) => this.messageTextFieldListener(event)}
+            />
           </Column>
           <Column xs={4} className="form-bottom-element">
-            <RaisedButton disabled={disableChanges} label="Send"
-                          primary={true} onClick={this.sendMessage.bind(this)}/>
-
+            <RaisedButton disabled={disableChanges} label="Send" primary
+              onClick={() => this.sendMessage()}
+            />
             <RaisedButton disabled={clearDisable} label="Clear" className="margin-left-5"
-                          primary={true} onClick={this.clearMessages.bind(this)}/>
+              primary onClick={() => this.clearMessages()}
+            />
           </Column>
         </Row>
-        <SocketTerminalList ref="terminalList" connectionType={connectionType} terminalData={this.props.terminalData}/>
+        <SocketTerminalList
+          ref="terminalList" connectionType={connectionType}
+          terminalData={this.props.terminalData}
+        />
       </div>
     );
   }
 }
+
+SocketTerminal.propTypes = {
+  dispatch: React.PropTypes.func,
+  terminalData: React.PropTypes.array,
+  parameters: React.PropTypes.object,
+  status: React.PropTypes.string,
+  webSocket: React.PropTypes.object,
+};
 
 function mapStateToProps(state) {
   const socketState = state.socketContainerReducer;
@@ -69,8 +83,8 @@ function mapStateToProps(state) {
   return {
     terminalData: currentConnection.messages,
     status: currentConnection.status,
-    parameters: currentConnection.parameters
-  }
+    parameters: currentConnection.parameters,
+  };
 }
 
 export default connect(mapStateToProps)(SocketTerminal);

@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
-import RaisedButton from 'material-ui/lib/raised-button';
 import FlatButton from 'material-ui/lib/flat-button';
 import AddIcon from 'material-ui/lib/svg-icons/content/add-box';
 import ArrowIcon from 'material-ui/lib/svg-icons/action/compare-arrows';
@@ -20,125 +19,135 @@ class HistoryList extends React.Component {
       connectionStatusDialog: false,
       addConnectionDialog: false,
       connectionErrorMessage: '',
-      connectionName: ''
+      connectionName: '',
     };
   }
 
   handleStatusDialogOpen() {
-    this.setState({connectionStatusDialog: true});
-  };
+    this.setState({ connectionStatusDialog: true });
+  }
 
   handleStatusDialogClose() {
-    this.setState({connectionStatusDialog: false});
-  };
+    this.setState({ connectionStatusDialog: false });
+  }
 
   handleAddConnectionOpen() {
     this.setState({
       addConnectionDialog: true,
-      connectionErrorMessage: ''
+      connectionErrorMessage: '',
     });
-  };
+  }
 
   handleAddConnectionClose() {
-    this.setState({addConnectionDialog: false});
-  };
+    this.setState({ addConnectionDialog: false });
+  }
 
   addConnection() {
     const connectionName = this.refs.connectionName.input.value;
     if (connectionName === '') {
-      this.setState({connectionErrorMessage: 'This field is required'});
+      this.setState({ connectionErrorMessage: 'This field is required' });
       return;
     }
     this.props.dispatch({
       type: SocketContainerAction.ADD_CONNECTION,
-      value: connectionName
+      value: connectionName,
     });
     this.handleAddConnectionClose();
   }
 
   newConnectionTextListener(event) {
-    if (event.keyCode == 13) {
+    if (event.keyCode === 13) {
       this.addConnection();
     }
   }
 
-  render() {
-    const containerStyle = {height: this.props.height};
-    const items = this.props.connections.map((item, index) => this.createListItem(item, index));
-    const statusActions = [
-      <FlatButton
-        label="Got it!"
-        primary={true}
-        onTouchTap={this.handleStatusDialogClose.bind(this)}
-      />
-    ];
-    const addConnectionActions = [
-      <FlatButton
-        label="Cancel"
-        primary={true}
-        onTouchTap={this.handleAddConnectionClose.bind(this)}
-      />,
-      <FlatButton
-        label="Add Connection"
-        primary={true}
-        onTouchTap={this.addConnection.bind(this)}
-      />
-    ];
-    return (
-      <List style={containerStyle} className="full-height">
-        <ListItem primaryText="Add Connection"
-                  leftIcon={<AddIcon></AddIcon>}
-                  className="menu-button-item"
-                  onTouchTap={this.handleAddConnectionOpen.bind(this)}/>
-        {items}
-
-        <Dialog
-          contentStyle={{width: '350px'}}
-          title="Active socket connection"
-          modal={false}
-          actions={statusActions}
-          open={this.state.connectionStatusDialog}
-          onRequestClose={this.handleStatusDialogClose.bind(this)}>
-          Please close the current connection first.
-        </Dialog>
-        <Dialog
-          contentStyle={{width: '300px'}}
-          title="Add Connection"
-          modal={false}
-          actions={addConnectionActions}
-          open={this.state.addConnectionDialog}
-          onRequestClose={this.handleAddConnectionClose.bind(this)}>
-          <TextField onKeyUp={this.newConnectionTextListener.bind(this)}
-                     ref="connectionName" hint floatingLabelText="Connection Name"
-                     errorText={this.state.connectionErrorMessage}
-          />
-        </Dialog>
-      </List>
-    );
-  }
-
   updatePlaygroundIndex(itemIndex) {
-    if (this.props.status == ConnectionStatus.CONNECTED) {
+    if (this.props.status === ConnectionStatus.CONNECTED) {
       this.handleStatusDialogOpen();
       return;
     }
     this.props.dispatch({
       type: SocketContainerAction.UPDATE_INDEX,
-      value: itemIndex
+      value: itemIndex,
     });
   }
 
   createListItem(connectionItem, index) {
     const selectedClass = this.props.currentIndex === index ? 'selected-item' : '';
     return (
-      <ListItem key={index}
-                leftIcon={<ArrowIcon></ArrowIcon>}
-                primaryText={connectionItem.name}
-                onTouchTap={() => this.updatePlaygroundIndex(index)}
-                className={selectedClass}/>
-    )
+      <ListItem
+        key={index} leftIcon={<ArrowIcon />}
+        primaryText={connectionItem.name} onTouchTap={() => this.updatePlaygroundIndex(index)}
+        className={selectedClass}
+      />
+    );
+  }
+
+  render() {
+    const containerStyle = { height: this.props.height };
+    const items = this.props.connections.map((item, index) => this.createListItem(item, index));
+    const statusActions = [
+      <FlatButton
+        label="Got it!"
+        primary
+        onTouchTap={() => this.handleStatusDialogClose()}
+      />,
+    ];
+    const addConnectionActions = [
+      <FlatButton
+        label="Cancel"
+        primary
+        onTouchTap={() => this.handleAddConnectionClose()}
+      />,
+      <FlatButton
+        label="Add Connection"
+        primary
+        onTouchTap={() => this.addConnection()}
+      />,
+    ];
+    return (
+      <List style={containerStyle} className="full-height">
+        <ListItem
+          primaryText="Add Connection" leftIcon={<AddIcon />}
+          className="menu-button-item" onTouchTap={() => this.handleAddConnectionOpen()}
+        />
+        {items}
+        <Dialog
+          contentStyle={{ width: '350px' }}
+          title="Active socket connection"
+          modal={false}
+          actions={statusActions}
+          open={this.state.connectionStatusDialog}
+          onRequestClose={() => this.handleStatusDialogClose()}
+        >
+          Please close the current connection first.
+        </Dialog>
+        <Dialog
+          contentStyle={{ width: '300px' }}
+          title="Add Connection"
+          modal={false}
+          actions={addConnectionActions}
+          open={this.state.addConnectionDialog}
+          onRequestClose={() => this.handleAddConnectionClose()}
+        >
+        <TextField
+          onKeyUp={(event) => this.newConnectionTextListener(event)}
+          ref="connectionName" hint floatingLabelText="Connection Name"
+          errorText={this.state.connectionErrorMessage}
+        />
+        </Dialog>
+      </List>
+    );
   }
 }
+
+HistoryList.propTypes = {
+  dispatch: React.PropTypes.func,
+  currentIndex: React.PropTypes.number,
+  connections: React.PropTypes.array,
+  status: React.PropTypes.string,
+  height: React.PropTypes.number,
+};
 
 function mapStateToProps(state) {
   const stateObject = state.socketContainerReducer.toJS();
@@ -146,8 +155,8 @@ function mapStateToProps(state) {
   return {
     connections: stateObject.connections,
     currentIndex: stateObject.index,
-    status: currentConnection.status
-  }
+    status: currentConnection.status,
+  };
 }
 
 export default connect(mapStateToProps)(HistoryList);

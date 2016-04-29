@@ -1,7 +1,8 @@
-import Immutable from 'immutable';
-import { ConnectionType, ConnectionStatus, MessageType } from '../constant/Constants';
-import { SocketContainerAction, SocketConnectionAction, StorageAction } from '../actions/ActionsType';
-import { ConnectionFunctions, ContainerFunctions, StorageFunctions } from '../actions/ActionsFunction';
+import { ConnectionStatus } from '../constant/Constants';
+import { SocketContainerAction, SocketConnectionAction, StorageAction }
+  from '../actions/ActionsType';
+import { ConnectionFunctions, ContainerFunctions, StorageFunctions }
+  from '../actions/ActionsFunction';
 
 export default function (state = StorageFunctions.getDefaultState(), action) {
   switch (action.type) {
@@ -24,7 +25,8 @@ export default function (state = StorageFunctions.getDefaultState(), action) {
     case SocketConnectionAction.CONNECTED:
       return ConnectionFunctions.updateConnectionStatus(state, action, ConnectionStatus.CONNECTED);
     case SocketConnectionAction.DISCONNECT:
-      return ConnectionFunctions.updateConnectionStatus(state, action, ConnectionStatus.DISCONNECTED);
+      return ConnectionFunctions.updateConnectionStatus(state, action,
+        ConnectionStatus.DISCONNECTED);
     case SocketConnectionAction.RECEIVED:
       return ContainerFunctions.updateTerminalData(state, action);
 

@@ -23,7 +23,7 @@
   "author": "William Marcel Cabrera Santana",
   "devDependencies": {
     "babel-core": "^6.0.0",
-    "babel-eslint": "^5.0.0-beta4",
+    "babel-eslint": "6.0.2",
     "babel-loader": "^6.0.0",
     "babel-preset-es2015": "^6.0.15",
     "babel-preset-react": "^6.0.15",
@@ -32,9 +32,9 @@
     "chai": "^3.2.0",
     "copyfiles": "^0.2.1",
     "css-loader": "^0.23.0",
-    "eslint": "^1.2.1",
+    "eslint": "2.7.0",
     "eslint-loader": "^1.0.0",
-    "eslint-plugin-react": "^3.3.0",
+    "eslint-plugin-react": "4.3.0",
     "file-loader": "^0.8.4",
     "glob": "^6.0.0",
     "isparta-instrumenter-loader": "^1.0.0",
@@ -63,7 +63,9 @@
     "sass-loader": "^3.1.2",
     "node-sass": "^3.4.2",
     "postcss": "^5.0.11",
-    "postcss-loader": "^0.8.0"
+    "postcss-loader": "^0.8.0",
+    "eslint-config-airbnb": "^7.0.0",
+    "eslint-plugin-jsx-a11y": "^0.6.2"
   },
   "dependencies": {
     "core-js": "^2.0.0",

@@ -1,17 +1,18 @@
 import 'flexboxgrid';
 import React from 'react';
 
-class Row extends React.Component {
+const Row = ({ className, children }) => {
+  const elementClassName = `row ${className || ''}`;
+  return (
+    <div className={elementClassName}>
+      {children}
+    </div>
+  );
+};
 
-  render() {
-    const elementClassName = `row ${this.props.className || ''}`;
-    return (
-      <div className={elementClassName}>
-        {this.props.children}
-      </div>
-    );
-  }
-
-}
+Row.propTypes = {
+  className: React.PropTypes.string,
+  children: React.PropTypes.node.isRequired,
+};
 
 export default Row;

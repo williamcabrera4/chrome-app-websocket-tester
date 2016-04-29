@@ -4,7 +4,7 @@ import 'styles/App.scss';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
 import App from './components/Main';
 import makeStore from './stores/AppStore';
 import StoreHelper from './helpers/StorageHelper';
@@ -20,8 +20,9 @@ const store = makeStore();
 
 const storeHelper = new StoreHelper(store);
 storeHelper.init();
-storeHelper.readState((offlineState) =>
-  store.dispatch({type: StorageAction.READ_OFFLINE, value: offlineState}));
+storeHelper.readState((offlineState) => {
+  store.dispatch({ type: StorageAction.READ_OFFLINE, value: offlineState });
+});
 
 // Render the main component into the dom
 ReactDOM.render(

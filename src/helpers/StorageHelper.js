@@ -21,7 +21,8 @@ class StorageHelper {
 
   saveState(state) {
     // Don't save the connected status
-    const newState = ConnectionFunctions.updateConnectionStatus(state, {}, ConnectionStatus.DISCONNECTED);
+    const newState = ConnectionFunctions.updateConnectionStatus(state, {},
+      ConnectionStatus.DISCONNECTED);
     const stateJSON = JSON.stringify(newState);
     proxyStorage.setItem(stateKey, stateJSON);
   }

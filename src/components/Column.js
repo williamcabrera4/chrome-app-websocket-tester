@@ -3,15 +3,6 @@ import React from 'react';
 
 class Column extends React.Component {
 
-  render() {
-    const className = this.generateClass();
-    return (
-      <div className={className} style={this.props.style}>
-        {this.props.children}
-      </div>
-    );
-  }
-
   generateClass() {
     let className = this.props.className || '';
     className = this.generateClassName(className, 'xs');
@@ -23,10 +14,25 @@ class Column extends React.Component {
 
   generateClassName(className, type) {
     if (this.props[type]) {
-      return `${className} col-${type}-${this.props[type]}`
+      return `${className} col-${type}-${this.props[type]}`;
     }
     return className;
   }
+
+  render() {
+    const className = this.generateClass();
+    return (
+      <div className={className} style={this.props.style}>
+        {this.props.children}
+      </div>
+    );
+  }
 }
+
+Column.propTypes = {
+  className: React.PropTypes.string,
+  children: React.PropTypes.node,
+  style: React.PropTypes.object,
+};
 
 export default Column;

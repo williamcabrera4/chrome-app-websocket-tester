@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 // Code from StackOverflow
 // Reference: http://stackoverflow.com/a/28396165/3140190
 
