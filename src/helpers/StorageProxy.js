@@ -5,7 +5,7 @@ const storageProxy = {
   getItem: () => {},
 };
 
-if (typeof chrome.storage !== 'undefined') {
+if (typeof chrome !== 'undefined' && typeof chrome.storage !== 'undefined') {
   storageProxy.setItem = (key, value) => {
     const storageObject = {};
     storageObject[key] = value;
