@@ -8,7 +8,6 @@ import Column from './Column';
 const appBarHeight = 70;
 
 class AppComponent extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {

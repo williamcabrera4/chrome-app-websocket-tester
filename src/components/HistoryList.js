@@ -12,14 +12,12 @@ import { ConnectionStatus } from '../constant/Constants';
 import { SocketContainerAction } from '../actions/ActionsType';
 
 class HistoryList extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       connectionStatusDialog: false,
       addConnectionDialog: false,
       connectionErrorMessage: '',
-      connectionName: '',
     };
   }
 
@@ -43,7 +41,7 @@ class HistoryList extends React.Component {
   }
 
   addConnection() {
-    const connectionName = this.refs.connectionName.input.value;
+    const connectionName = this.connectionName.input.value;
     if (connectionName === '') {
       this.setState({ connectionErrorMessage: 'This field is required' });
       return;
@@ -76,8 +74,10 @@ class HistoryList extends React.Component {
     const selectedClass = this.props.currentIndex === index ? 'selected-item' : '';
     return (
       <ListItem
-        key={index} leftIcon={<ArrowIcon />}
-        primaryText={connectionItem.name} onTouchTap={() => this.updatePlaygroundIndex(index)}
+        key={index}
+        leftIcon={<ArrowIcon />}
+        primaryText={connectionItem.name}
+        onTouchTap={() => this.updatePlaygroundIndex(index)}
         className={selectedClass}
       />
     );
@@ -108,8 +108,10 @@ class HistoryList extends React.Component {
     return (
       <List style={containerStyle} className="full-height">
         <ListItem
-          primaryText="Add Connection" leftIcon={<AddIcon />}
-          className="menu-button-item" onTouchTap={() => this.handleAddConnectionOpen()}
+          primaryText="Add Connection"
+          leftIcon={<AddIcon />}
+          className="menu-button-item"
+          onTouchTap={() => this.handleAddConnectionOpen()}
         />
         {items}
         <Dialog
@@ -130,11 +132,13 @@ class HistoryList extends React.Component {
           open={this.state.addConnectionDialog}
           onRequestClose={() => this.handleAddConnectionClose()}
         >
-        <TextField
-          onKeyUp={(event) => this.newConnectionTextListener(event)}
-          ref="connectionName" hint floatingLabelText="Connection Name"
-          errorText={this.state.connectionErrorMessage}
-        />
+          <TextField
+            onKeyUp={event => this.newConnectionTextListener(event)}
+            ref={(input) => { this.connectionName = input; }}
+            hint
+            floatingLabelText="Connection Name"
+            errorText={this.state.connectionErrorMessage}
+          />
         </Dialog>
       </List>
     );
@@ -142,11 +146,11 @@ class HistoryList extends React.Component {
 }
 
 HistoryList.propTypes = {
-  dispatch: React.PropTypes.func,
-  currentIndex: React.PropTypes.number,
-  connections: React.PropTypes.array,
-  status: React.PropTypes.string,
-  height: React.PropTypes.number,
+  dispatch: React.PropTypes.func.isRequired,
+  currentIndex: React.PropTypes.number.isRequired,
+  connections: React.PropTypes.array.isRequired,
+  status: React.PropTypes.string.isRequired,
+  height: React.PropTypes.number.isRequired,
 };
 
 function mapStateToProps(state) {

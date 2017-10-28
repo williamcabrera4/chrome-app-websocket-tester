@@ -6,7 +6,6 @@ import { ConnectionFunctions, ContainerFunctions, StorageFunctions }
 
 export default function (state = StorageFunctions.getDefaultState(), action) {
   switch (action.type) {
-
     case SocketContainerAction.CHANGE_CONNECTION_TYPE:
       return ContainerFunctions.updateConnectionType(state, action);
     case SocketContainerAction.CHANGE_HOST:
@@ -25,8 +24,10 @@ export default function (state = StorageFunctions.getDefaultState(), action) {
     case SocketConnectionAction.CONNECTED:
       return ConnectionFunctions.updateConnectionStatus(state, action, ConnectionStatus.CONNECTED);
     case SocketConnectionAction.DISCONNECT:
-      return ConnectionFunctions.updateConnectionStatus(state, action,
-        ConnectionStatus.DISCONNECTED);
+      return ConnectionFunctions.updateConnectionStatus(
+        state, action,
+        ConnectionStatus.DISCONNECTED,
+      );
     case SocketConnectionAction.RECEIVED:
       return ContainerFunctions.updateTerminalData(state, action);
 

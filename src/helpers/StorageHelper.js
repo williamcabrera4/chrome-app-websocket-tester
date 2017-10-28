@@ -5,7 +5,6 @@ import { ConnectionStatus } from '../constant/Constants';
 const stateKey = 'state';
 
 class StorageHelper {
-
   constructor(store) {
     this.store = store;
   }
@@ -21,8 +20,10 @@ class StorageHelper {
 
   saveState(state) {
     // Don't save the connected status
-    const newState = ConnectionFunctions.updateConnectionStatus(state, {},
-      ConnectionStatus.DISCONNECTED);
+    const newState = ConnectionFunctions.updateConnectionStatus(
+      state, {},
+      ConnectionStatus.DISCONNECTED,
+    );
     const stateJSON = JSON.stringify(newState);
     proxyStorage.setItem(stateKey, stateJSON);
   }
@@ -30,7 +31,6 @@ class StorageHelper {
   readState(callback) {
     proxyStorage.getItem(stateKey, callback);
   }
-
 }
 
 export default StorageHelper;

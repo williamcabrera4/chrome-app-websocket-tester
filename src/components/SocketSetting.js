@@ -17,7 +17,6 @@ const textFieldStyle = {
 };
 
 class SocketSetting extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -48,13 +47,11 @@ class SocketSetting extends React.Component {
   }
 
   connectToWebSocket() {
-    const webSocket = this.props.webSocket;
-    const host = this.props.parameters.host;
+    const { webSocket, parameters, dispatch, status } = this.props;
+    const { host, channel } = parameters;
     if (this.props.status === ConnectionStatus.DISCONNECTED && host !== '') {
-      const dispatch = this.props.dispatch;
-      const channel = this.props.parameters.channel;
       webSocket.connect(host, dispatch, channel);
-    } else if (this.props.status === ConnectionStatus.DISCONNECTED && host === '') {
+    } else if (status === ConnectionStatus.DISCONNECTED && host === '') {
       this.setState({ hostErrorMessage: 'This field is required' });
     } else {
       webSocket.close();
@@ -67,8 +64,11 @@ class SocketSetting extends React.Component {
       return (
         <Row >
           <Column xs={3}>
-            <TextField value={channelValue} hint floatingLabelText="Channel"
-              onChange={(event) => this.handleChannelChange(event)}
+            <TextField
+              value={channelValue}
+              hint
+              floatingLabelText="Channel"
+              onChange={event => this.handleChannelChange(event)}
               disabled={disableChanges}
               style={textFieldStyle}
             />
@@ -102,9 +102,12 @@ class SocketSetting extends React.Component {
         <Row>
           <h2 className="margin-bottom-0">
             Websocket Settings: <span className="highlight-title">{connectionName}
-            <RemoveIcon className="cursor-pointer" onClick={() => this.removeConnection()}
-              color={iconColor}
-            /></span>
+              <RemoveIcon
+                className="cursor-pointer"
+                onClick={() => this.removeConnection()}
+                color={iconColor}
+              />
+            </span>
           </h2>
         </Row>
         <Row className="relative-container">
@@ -121,15 +124,20 @@ class SocketSetting extends React.Component {
             </SelectField>
           </Column>
           <Column xs={6}>
-            <TextField value={hostValue} hint floatingLabelText="Location"
-              onChange={(event) => this.handleHostChange(event)}
+            <TextField
+              value={hostValue}
+              hint
+              floatingLabelText="Location"
+              onChange={event => this.handleHostChange(event)}
               disabled={disableChanges}
               errorText={this.state.hostErrorMessage}
               style={textFieldStyle}
             />
           </Column>
           <Column xs={2} className="form-bottom-element" style={buttonOnErrorStyle}>
-            <RaisedButton label={buttonLabel} primary
+            <RaisedButton
+              label={buttonLabel}
+              primary
               onClick={() => this.connectToWebSocket()}
             />
           </Column>
@@ -141,11 +149,11 @@ class SocketSetting extends React.Component {
 }
 
 SocketSetting.propTypes = {
-  dispatch: React.PropTypes.func,
-  name: React.PropTypes.string,
-  parameters: React.PropTypes.object,
-  status: React.PropTypes.string,
-  webSocket: React.PropTypes.object,
+  dispatch: React.PropTypes.func.isRequired,
+  name: React.PropTypes.string.isRequired,
+  parameters: React.PropTypes.object.isRequired,
+  status: React.PropTypes.string.isRequired,
+  webSocket: React.PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {

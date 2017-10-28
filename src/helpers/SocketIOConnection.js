@@ -4,7 +4,6 @@ import { MessageType } from '../constant/Constants';
 import Helper from '../helpers/GlobalHelpers';
 
 class SocketIOConnection {
-
   connect(wsUri, dispatch, channel) {
     this.websocket = io.connect(wsUri);
     this.dispatch = dispatch;

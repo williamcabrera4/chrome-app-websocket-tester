@@ -4,7 +4,6 @@ import FlatButton from 'material-ui/lib/flat-button';
 import { REPOSITORY_URL } from '../constant/Constants';
 
 class SocketPlaygroundBar extends React.Component {
-
   openRepository() {
     window.open(REPOSITORY_URL);
   }

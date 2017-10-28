@@ -11,9 +11,8 @@ import Column from './Column';
 import Helper from '../helpers/GlobalHelpers';
 
 class SocketTerminal extends React.Component {
-
   componentDidUpdate() {
-    const terminalComponent = this.refs.terminalList;
+    const terminalComponent = this.terminalList;
     if (typeof terminalComponent !== 'undefined') {
       const terminalNode = ReactDOM.findDOMNode(terminalComponent).querySelector('.full-height');
       terminalNode.scrollTop = terminalNode.scrollHeight;
@@ -21,7 +20,7 @@ class SocketTerminal extends React.Component {
   }
 
   sendMessage() {
-    const messageInput = this.refs.messageText.input;
+    const messageInput = this.messageText.input;
     this.props.webSocket.send(messageInput.value);
     messageInput.value = '';
   }
@@ -46,22 +45,34 @@ class SocketTerminal extends React.Component {
       <div>
         <Row className="relative-container">
           <Column xs={8}>
-            <TextField ref="messageText" disabled={disableChanges}
-              int fullWidth floatingLabelText="Message"
-              onKeyUp={(event) => this.messageTextFieldListener(event)}
+            <TextField
+              ref={(input) => { this.messageText = input; }}
+              disabled={disableChanges}
+              int
+              fullWidth
+              floatingLabelText="Message"
+              onKeyUp={event => this.messageTextFieldListener(event)}
             />
           </Column>
           <Column xs={4} className="form-bottom-element">
-            <RaisedButton disabled={disableChanges} label="Send" primary
+            <RaisedButton
+              disabled={disableChanges}
+              label="Send"
+              primary
               onClick={() => this.sendMessage()}
             />
-            <RaisedButton disabled={clearDisable} label="Clear" className="margin-left-5"
-              primary onClick={() => this.clearMessages()}
+            <RaisedButton
+              disabled={clearDisable}
+              label="Clear"
+              className="margin-left-5"
+              primary
+              onClick={() => this.clearMessages()}
             />
           </Column>
         </Row>
         <SocketTerminalList
-          ref="terminalList" connectionType={connectionType}
+          ref={(input) => { this.terminalList = input; }}
+          connectionType={connectionType}
           terminalData={this.props.terminalData}
         />
       </div>
@@ -70,11 +81,11 @@ class SocketTerminal extends React.Component {
 }
 
 SocketTerminal.propTypes = {
-  dispatch: React.PropTypes.func,
-  terminalData: React.PropTypes.array,
-  parameters: React.PropTypes.object,
-  status: React.PropTypes.string,
-  webSocket: React.PropTypes.object,
+  dispatch: React.PropTypes.func.isRequired,
+  terminalData: React.PropTypes.array.isRequired,
+  parameters: React.PropTypes.object.isRequired,
+  status: React.PropTypes.string.isRequired,
+  webSocket: React.PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {

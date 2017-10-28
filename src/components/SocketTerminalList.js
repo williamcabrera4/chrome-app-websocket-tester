@@ -7,7 +7,6 @@ import { ConnectionType } from '../constant/Constants';
 import Helper from '../helpers/GlobalHelpers';
 
 class SocketTerminalList extends React.Component {
-
   componentDidMount() {
     window.addEventListener('resize', () => this.forceUpdate());
   }

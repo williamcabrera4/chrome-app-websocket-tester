@@ -14,7 +14,7 @@ const TerminalListItem = ({ messageItem }) => {
 };
 
 TerminalListItem.propTypes = {
-  messageItem: React.PropTypes.object,
+  messageItem: React.PropTypes.object.isRequired,
 };
 
 export default TerminalListItem;

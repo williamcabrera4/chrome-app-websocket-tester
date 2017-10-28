@@ -1,4 +1,4 @@
-import 'flexboxgrid';
+import 'flexboxgrid.css';
 import React from 'react';
 
 const Row = ({ className, children }) => {
@@ -11,7 +11,7 @@ const Row = ({ className, children }) => {
 };
 
 Row.propTypes = {
-  className: React.PropTypes.string,
+  className: React.PropTypes.string.isRequired,
   children: React.PropTypes.node.isRequired,
 };
 

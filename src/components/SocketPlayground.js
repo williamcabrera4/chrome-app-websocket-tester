@@ -22,7 +22,7 @@ const SocketPlayground = ({ parameters }) => {
 };
 
 SocketPlayground.propTypes = {
-  parameters: React.PropTypes.object,
+  parameters: React.PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
