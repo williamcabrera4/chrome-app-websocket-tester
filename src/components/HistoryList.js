@@ -1,12 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import List from 'material-ui/lib/lists/list';
-import ListItem from 'material-ui/lib/lists/list-item';
-import FlatButton from 'material-ui/lib/flat-button';
-import AddIcon from 'material-ui/lib/svg-icons/content/add-box';
-import ArrowIcon from 'material-ui/lib/svg-icons/action/compare-arrows';
-import Dialog from 'material-ui/lib/dialog';
-import TextField from 'material-ui/lib/text-field';
+import { List, ListItem } from 'material-ui/List';
+import FlatButton from 'material-ui/FlatButton';
+import AddIcon from 'material-ui/svg-icons/content/add-box';
+import ArrowIcon from 'material-ui/svg-icons/action/compare-arrows';
+import Dialog from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
 import Helper from '../helpers/GlobalHelpers';
 import { ConnectionStatus } from '../constant/Constants';
 import { SocketContainerAction } from '../actions/ActionsType';
@@ -146,11 +146,11 @@ class HistoryList extends React.Component {
 }
 
 HistoryList.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
-  currentIndex: React.PropTypes.number.isRequired,
-  connections: React.PropTypes.array.isRequired,
-  status: React.PropTypes.string.isRequired,
-  height: React.PropTypes.number.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  currentIndex: PropTypes.number.isRequired,
+  connections: PropTypes.array.isRequired,
+  status: PropTypes.string.isRequired,
+  height: PropTypes.number.isRequired,
 };
 
 function mapStateToProps(state) {

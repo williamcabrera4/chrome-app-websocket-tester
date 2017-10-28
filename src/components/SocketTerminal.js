@@ -1,7 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import TextField from 'material-ui/lib/text-field';
-import RaisedButton from 'material-ui/lib/raised-button';
+import PropTypes from 'prop-types';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
 import SocketTerminalList from './SocketTerminalList';
 import { ConnectionStatus } from '../constant/Constants';
@@ -14,7 +14,7 @@ class SocketTerminal extends React.Component {
   componentDidUpdate() {
     const terminalComponent = this.terminalList;
     if (typeof terminalComponent !== 'undefined') {
-      const terminalNode = ReactDOM.findDOMNode(terminalComponent).querySelector('.full-height');
+      const terminalNode = terminalComponent.querySelector('.full-height');
       terminalNode.scrollTop = terminalNode.scrollHeight;
     }
   }
@@ -48,7 +48,7 @@ class SocketTerminal extends React.Component {
             <TextField
               ref={(input) => { this.messageText = input; }}
               disabled={disableChanges}
-              int
+              hint="Hello world"
               fullWidth
               floatingLabelText="Message"
               onKeyUp={event => this.messageTextFieldListener(event)}
@@ -81,11 +81,11 @@ class SocketTerminal extends React.Component {
 }
 
 SocketTerminal.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
-  terminalData: React.PropTypes.array.isRequired,
-  parameters: React.PropTypes.object.isRequired,
-  status: React.PropTypes.string.isRequired,
-  webSocket: React.PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  terminalData: PropTypes.array.isRequired,
+  parameters: PropTypes.object.isRequired,
+  status: PropTypes.string.isRequired,
+  webSocket: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {

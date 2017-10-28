@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Paper from 'material-ui/lib/paper';
+import Paper from 'material-ui/Paper';
 import { ConnectionType } from '../constant/Constants';
 import Helper from '../helpers/GlobalHelpers';
 import SocketSetting from './SocketSetting';
@@ -22,7 +23,7 @@ const SocketPlayground = ({ parameters }) => {
 };
 
 SocketPlayground.propTypes = {
-  parameters: React.PropTypes.object.isRequired,
+  parameters: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {

@@ -1,5 +1,6 @@
-import 'flexboxgrid.css';
+import 'flexboxgrid'; // eslint-disable-line
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class Column extends React.Component {
   generateClass() {
@@ -29,9 +30,14 @@ class Column extends React.Component {
 }
 
 Column.propTypes = {
-  className: React.PropTypes.string.isRequired,
-  children: React.PropTypes.node.isRequired,
-  style: React.PropTypes.object.isRequired,
+  className: PropTypes.string,
+  children: PropTypes.node.isRequired,
+  style: PropTypes.object,
+};
+
+Column.defaultProps = {
+  className: '',
+  style: {},
 };
 
 export default Column;

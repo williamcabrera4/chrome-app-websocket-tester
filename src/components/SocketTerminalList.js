@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Row from './Row';
 import Column from './Column';
@@ -7,16 +8,16 @@ import { ConnectionType } from '../constant/Constants';
 import Helper from '../helpers/GlobalHelpers';
 
 class SocketTerminalList extends React.Component {
+  static createRow(messageItem) {
+    return <TerminalListItem key={messageItem.key} messageItem={messageItem} />;
+  }
+
   componentDidMount() {
     window.addEventListener('resize', () => this.forceUpdate());
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', () => this.forceUpdate());
-  }
-
-  createRow(messageItem) {
-    return <TerminalListItem key={messageItem.key} messageItem={messageItem} />;
   }
 
   render() {
@@ -43,8 +44,8 @@ class SocketTerminalList extends React.Component {
 }
 
 SocketTerminalList.propTypes = {
-  connectionType: React.PropTypes.string,
-  terminalData: React.PropTypes.array,
+  connectionType: PropTypes.string.isRequired,
+  terminalData: PropTypes.array.isRequired,
 };
 
 function mapStateToProps(state) {

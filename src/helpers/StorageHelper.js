@@ -15,10 +15,10 @@ class StorageHelper {
 
   subscribeAction() {
     const state = this.store.getState().socketContainerReducer;
-    this.saveState(state);
+    StorageHelper.saveState(state);
   }
 
-  saveState(state) {
+  static saveState(state) {
     // Don't save the connected status
     const newState = ConnectionFunctions.updateConnectionStatus(
       state, {},
@@ -28,7 +28,7 @@ class StorageHelper {
     proxyStorage.setItem(stateKey, stateJSON);
   }
 
-  readState(callback) {
+  static readState(callback) {
     proxyStorage.getItem(stateKey, callback);
   }
 }
