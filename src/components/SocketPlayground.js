@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
 import { ConnectionType } from '../constant/Constants';
-import Helper from '../helpers/GlobalHelpers';
-import SocketSetting from './SocketSetting';
-import SocketTerminal from './SocketTerminal';
+import SocketSetting from '../containers/SocketSetting';
+import SocketTerminal from '../containers/SocketTerminal';
 import WebSocketConnection from '../helpers/WebSocketConnection';
 import SocketIOConnection from '../helpers/SocketIOConnection';
 
@@ -26,12 +24,4 @@ SocketPlayground.propTypes = {
   parameters: PropTypes.object.isRequired,
 };
 
-function mapStateToProps(state) {
-  const socketState = state.socketContainerReducer;
-  const currentConnection = Helper.getCurrentConnection(socketState);
-  return {
-    parameters: currentConnection.parameters,
-  };
-}
-
-export default connect(mapStateToProps)(SocketPlayground);
+export default SocketPlayground;

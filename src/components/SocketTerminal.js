@@ -2,13 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import { connect } from 'react-redux';
-import SocketTerminalList from './SocketTerminalList';
+import SocketTerminalList from '../containers/SocketTerminalList';
 import { ConnectionStatus } from '../constant/Constants';
 import { SocketContainerAction } from '../actions/ActionsType';
 import Row from './Row';
 import Column from './Column';
-import Helper from '../helpers/GlobalHelpers';
 
 class SocketTerminal extends React.Component {
   componentDidUpdate() {
@@ -88,14 +86,4 @@ SocketTerminal.propTypes = {
   webSocket: PropTypes.object.isRequired,
 };
 
-function mapStateToProps(state) {
-  const socketState = state.socketContainerReducer;
-  const currentConnection = Helper.getCurrentConnection(socketState);
-  return {
-    terminalData: currentConnection.messages,
-    status: currentConnection.status,
-    parameters: currentConnection.parameters,
-  };
-}
-
-export default connect(mapStateToProps)(SocketTerminal);
+export default SocketTerminal;

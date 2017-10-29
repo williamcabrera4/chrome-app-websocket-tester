@@ -4,11 +4,9 @@ import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import MenuItem from 'material-ui/MenuItem';
-import { connect } from 'react-redux';
 import RemoveIcon from 'material-ui/svg-icons/content/remove-circle';
 import { ConnectionType, ConnectionStatus } from '../constant/Constants';
 import { SocketContainerAction } from '../actions/ActionsType';
-import Helper from '../helpers/GlobalHelpers';
 import Row from './Row';
 import Column from './Column';
 
@@ -163,14 +161,4 @@ SocketSetting.propTypes = {
   webSocket: PropTypes.object.isRequired,
 };
 
-function mapStateToProps(state) {
-  const socketState = state.socketContainerReducer;
-  const currentConnection = Helper.getCurrentConnection(socketState);
-  return {
-    name: currentConnection.name,
-    parameters: currentConnection.parameters,
-    status: currentConnection.status,
-  };
-}
-
-export default connect(mapStateToProps)(SocketSetting);
+export default SocketSetting;

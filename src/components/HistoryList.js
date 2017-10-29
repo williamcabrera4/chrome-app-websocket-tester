@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { List, ListItem } from 'material-ui/List';
 import FlatButton from 'material-ui/FlatButton';
 import AddIcon from 'material-ui/svg-icons/content/add-box';
 import ArrowIcon from 'material-ui/svg-icons/action/compare-arrows';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
-import Helper from '../helpers/GlobalHelpers';
 import { ConnectionStatus } from '../constant/Constants';
 import { SocketContainerAction } from '../actions/ActionsType';
 
@@ -135,7 +133,7 @@ class HistoryList extends React.Component {
           <TextField
             onKeyUp={event => this.newConnectionTextListener(event)}
             ref={(input) => { this.connectionName = input; }}
-            hint
+            hint="Connection Name"
             floatingLabelText="Connection Name"
             errorText={this.state.connectionErrorMessage}
           />
@@ -153,14 +151,4 @@ HistoryList.propTypes = {
   height: PropTypes.number.isRequired,
 };
 
-function mapStateToProps(state) {
-  const stateObject = state.socketContainerReducer.toJS();
-  const currentConnection = Helper.getCurrentConnection(state.socketContainerReducer);
-  return {
-    connections: stateObject.connections,
-    currentIndex: stateObject.index,
-    status: currentConnection.status,
-  };
-}
-
-export default connect(mapStateToProps)(HistoryList);
+export default HistoryList;

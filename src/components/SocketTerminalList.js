@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Row from './Row';
 import Column from './Column';
 import TerminalListItem from './TerminalListItem';
 import { ConnectionType } from '../constant/Constants';
-import Helper from '../helpers/GlobalHelpers';
 
 class SocketTerminalList extends React.Component {
   static createRow(messageItem) {
@@ -48,12 +46,4 @@ SocketTerminalList.propTypes = {
   terminalData: PropTypes.array.isRequired,
 };
 
-function mapStateToProps(state) {
-  const socketState = state.socketContainerReducer;
-  const currentConnection = Helper.getCurrentConnection(socketState);
-  return {
-    connectionType: currentConnection.parameters.type,
-  };
-}
-
-export default connect(mapStateToProps)(SocketTerminalList);
+export default SocketTerminalList;
