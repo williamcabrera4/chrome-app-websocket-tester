@@ -1,12 +1,14 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Row from './Row';
 import Column from './Column';
 import TerminalListItem from './TerminalListItem';
 import { ConnectionType } from '../constant/Constants';
-import Helper from '../helpers/GlobalHelpers';
 
 class SocketTerminalList extends React.Component {
+  static createRow(messageItem) {
+    return <TerminalListItem key={messageItem.key} messageItem={messageItem} />;
+  }
 
   componentDidMount() {
     window.addEventListener('resize', () => this.forceUpdate());
@@ -14,10 +16,6 @@ class SocketTerminalList extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', () => this.forceUpdate());
-  }
-
-  createRow(messageItem) {
-    return <TerminalListItem key={messageItem.key} messageItem={messageItem} />;
   }
 
   render() {
@@ -44,16 +42,8 @@ class SocketTerminalList extends React.Component {
 }
 
 SocketTerminalList.propTypes = {
-  connectionType: React.PropTypes.string,
-  terminalData: React.PropTypes.array,
+  connectionType: PropTypes.string.isRequired,
+  terminalData: PropTypes.array.isRequired,
 };
 
-function mapStateToProps(state) {
-  const socketState = state.socketContainerReducer;
-  const currentConnection = Helper.getCurrentConnection(socketState);
-  return {
-    connectionType: currentConnection.parameters.type,
-  };
-}
-
-export default connect(mapStateToProps)(SocketTerminalList);
+export default SocketTerminalList;

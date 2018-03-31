@@ -1,25 +1,21 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import List from 'material-ui/lib/lists/list';
-import ListItem from 'material-ui/lib/lists/list-item';
-import FlatButton from 'material-ui/lib/flat-button';
-import AddIcon from 'material-ui/lib/svg-icons/content/add-box';
-import ArrowIcon from 'material-ui/lib/svg-icons/action/compare-arrows';
-import Dialog from 'material-ui/lib/dialog';
-import TextField from 'material-ui/lib/text-field';
-import Helper from '../helpers/GlobalHelpers';
+import PropTypes from 'prop-types';
+import { List, ListItem } from 'material-ui/List';
+import FlatButton from 'material-ui/FlatButton';
+import AddIcon from 'material-ui/svg-icons/content/add-box';
+import ArrowIcon from 'material-ui/svg-icons/action/compare-arrows';
+import Dialog from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
 import { ConnectionStatus } from '../constant/Constants';
 import { SocketContainerAction } from '../actions/ActionsType';
 
 class HistoryList extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       connectionStatusDialog: false,
       addConnectionDialog: false,
       connectionErrorMessage: '',
-      connectionName: '',
     };
   }
 
@@ -43,7 +39,7 @@ class HistoryList extends React.Component {
   }
 
   addConnection() {
-    const connectionName = this.refs.connectionName.input.value;
+    const connectionName = this.connectionName.input.value;
     if (connectionName === '') {
       this.setState({ connectionErrorMessage: 'This field is required' });
       return;
@@ -76,8 +72,10 @@ class HistoryList extends React.Component {
     const selectedClass = this.props.currentIndex === index ? 'selected-item' : '';
     return (
       <ListItem
-        key={index} leftIcon={<ArrowIcon />}
-        primaryText={connectionItem.name} onTouchTap={() => this.updatePlaygroundIndex(index)}
+        key={index}
+        leftIcon={<ArrowIcon />}
+        primaryText={connectionItem.name}
+        onTouchTap={() => this.updatePlaygroundIndex(index)}
         className={selectedClass}
       />
     );
@@ -108,8 +106,10 @@ class HistoryList extends React.Component {
     return (
       <List style={containerStyle} className="full-height">
         <ListItem
-          primaryText="Add Connection" leftIcon={<AddIcon />}
-          className="menu-button-item" onTouchTap={() => this.handleAddConnectionOpen()}
+          primaryText="Add Connection"
+          leftIcon={<AddIcon />}
+          className="menu-button-item"
+          onTouchTap={() => this.handleAddConnectionOpen()}
         />
         {items}
         <Dialog
@@ -130,11 +130,13 @@ class HistoryList extends React.Component {
           open={this.state.addConnectionDialog}
           onRequestClose={() => this.handleAddConnectionClose()}
         >
-        <TextField
-          onKeyUp={(event) => this.newConnectionTextListener(event)}
-          ref="connectionName" hint floatingLabelText="Connection Name"
-          errorText={this.state.connectionErrorMessage}
-        />
+          <TextField
+            onKeyUp={event => this.newConnectionTextListener(event)}
+            ref={(input) => { this.connectionName = input; }}
+            hint="Connection Name"
+            floatingLabelText="Connection Name"
+            errorText={this.state.connectionErrorMessage}
+          />
         </Dialog>
       </List>
     );
@@ -142,21 +144,11 @@ class HistoryList extends React.Component {
 }
 
 HistoryList.propTypes = {
-  dispatch: React.PropTypes.func,
-  currentIndex: React.PropTypes.number,
-  connections: React.PropTypes.array,
-  status: React.PropTypes.string,
-  height: React.PropTypes.number,
+  dispatch: PropTypes.func.isRequired,
+  currentIndex: PropTypes.number.isRequired,
+  connections: PropTypes.array.isRequired,
+  status: PropTypes.string.isRequired,
+  height: PropTypes.number.isRequired,
 };
 
-function mapStateToProps(state) {
-  const stateObject = state.socketContainerReducer.toJS();
-  const currentConnection = Helper.getCurrentConnection(state.socketContainerReducer);
-  return {
-    connections: stateObject.connections,
-    currentIndex: stateObject.index,
-    status: currentConnection.status,
-  };
-}
-
-export default connect(mapStateToProps)(HistoryList);
+export default HistoryList;

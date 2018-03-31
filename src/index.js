@@ -1,13 +1,15 @@
 import 'core-js/fn/object/assign';
 import 'normalize.css';
-import 'styles/App.scss';
+import 'styles/App.scss'; // eslint-disable-line
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
 import App from './components/Main';
 import makeStore from './stores/AppStore';
-import StoreHelper from './helpers/StorageHelper';
+import StorageHelper from './helpers/StorageHelper';
 import { StorageAction } from './actions/ActionsType';
 
 // Needed for onTouchTap
@@ -18,15 +20,18 @@ injectTapEventPlugin();
 
 const store = makeStore();
 
-const storeHelper = new StoreHelper(store);
-storeHelper.init();
-storeHelper.readState((offlineState) => {
+const storageHelper = new StorageHelper(store);
+storageHelper.init();
+StorageHelper.readState((offlineState) => {
   store.dispatch({ type: StorageAction.READ_OFFLINE, value: offlineState });
 });
 
 // Render the main component into the dom
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <MuiThemeProvider>
+      <App />
+    </MuiThemeProvider>
   </Provider>
-  , document.getElementById('app'));
+  , document.getElementById('app'),
+);

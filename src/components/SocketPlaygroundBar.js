@@ -1,11 +1,10 @@
 import React from 'react';
-import AppBar from 'material-ui/lib/app-bar';
-import FlatButton from 'material-ui/lib/flat-button';
+import AppBar from 'material-ui/AppBar';
+import FlatButton from 'material-ui/FlatButton';
 import { REPOSITORY_URL } from '../constant/Constants';
 
 class SocketPlaygroundBar extends React.Component {
-
-  openRepository() {
+  static openRepository() {
     window.open(REPOSITORY_URL);
   }
 

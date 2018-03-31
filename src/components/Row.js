@@ -1,5 +1,6 @@
-import 'flexboxgrid';
+import 'flexboxgrid'; // eslint-disable-line
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Row = ({ className, children }) => {
   const elementClassName = `row ${className || ''}`;
@@ -11,8 +12,12 @@ const Row = ({ className, children }) => {
 };
 
 Row.propTypes = {
-  className: React.PropTypes.string,
-  children: React.PropTypes.node.isRequired,
+  className: PropTypes.string,
+  children: PropTypes.node.isRequired,
+};
+
+Row.defaultProps = {
+  className: '',
 };
 
 export default Row;

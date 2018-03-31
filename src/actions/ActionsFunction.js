@@ -75,7 +75,7 @@ function addConnection(state, action) {
 }
 
 function removeConnection(state) {
-  const size = state.get('connections').size;
+  const { size } = state.get('connections');
   if (size === 1) {
     return emptyState;
   }

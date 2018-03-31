@@ -1,13 +1,12 @@
 import React from 'react';
-import SelectField from 'material-ui/lib/select-field';
-import TextField from 'material-ui/lib/text-field';
-import RaisedButton from 'material-ui/lib/raised-button';
-import MenuItem from 'material-ui/lib/menus/menu-item';
-import { connect } from 'react-redux';
-import RemoveIcon from 'material-ui/lib/svg-icons/content/remove-circle';
+import PropTypes from 'prop-types';
+import SelectField from 'material-ui/SelectField';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import MenuItem from 'material-ui/MenuItem';
+import RemoveIcon from 'material-ui/svg-icons/content/remove-circle';
 import { ConnectionType, ConnectionStatus } from '../constant/Constants';
 import { SocketContainerAction } from '../actions/ActionsType';
-import Helper from '../helpers/GlobalHelpers';
 import Row from './Row';
 import Column from './Column';
 
@@ -17,7 +16,6 @@ const textFieldStyle = {
 };
 
 class SocketSetting extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -48,13 +46,16 @@ class SocketSetting extends React.Component {
   }
 
   connectToWebSocket() {
-    const webSocket = this.props.webSocket;
-    const host = this.props.parameters.host;
+    const {
+      webSocket,
+      parameters,
+      dispatch,
+      status,
+    } = this.props;
+    const { host, channel } = parameters;
     if (this.props.status === ConnectionStatus.DISCONNECTED && host !== '') {
-      const dispatch = this.props.dispatch;
-      const channel = this.props.parameters.channel;
       webSocket.connect(host, dispatch, channel);
-    } else if (this.props.status === ConnectionStatus.DISCONNECTED && host === '') {
+    } else if (status === ConnectionStatus.DISCONNECTED && host === '') {
       this.setState({ hostErrorMessage: 'This field is required' });
     } else {
       webSocket.close();
@@ -65,10 +66,13 @@ class SocketSetting extends React.Component {
     if (this.props.parameters.type === ConnectionType.io) {
       const channelValue = this.props.parameters.channel;
       return (
-        <Row >
+        <Row>
           <Column xs={3}>
-            <TextField value={channelValue} hint floatingLabelText="Channel"
-              onChange={(event) => this.handleChannelChange(event)}
+            <TextField
+              value={channelValue}
+              hint="sport-channel"
+              floatingLabelText="Channel"
+              onChange={event => this.handleChannelChange(event)}
               disabled={disableChanges}
               style={textFieldStyle}
             />
@@ -101,10 +105,14 @@ class SocketSetting extends React.Component {
       <div>
         <Row>
           <h2 className="margin-bottom-0">
-            Websocket Settings: <span className="highlight-title">{connectionName}
-            <RemoveIcon className="cursor-pointer" onClick={() => this.removeConnection()}
-              color={iconColor}
-            /></span>
+            Websocket Settings:
+            <span className="highlight-title">{connectionName}
+              <RemoveIcon
+                className="cursor-pointer"
+                onClick={() => this.removeConnection()}
+                color={iconColor}
+              />
+            </span>
           </h2>
         </Row>
         <Row className="relative-container">
@@ -121,15 +129,20 @@ class SocketSetting extends React.Component {
             </SelectField>
           </Column>
           <Column xs={6}>
-            <TextField value={hostValue} hint floatingLabelText="Location"
-              onChange={(event) => this.handleHostChange(event)}
+            <TextField
+              value={hostValue}
+              hint="ws://echo.websocket.org"
+              floatingLabelText="Resource URI"
+              onChange={event => this.handleHostChange(event)}
               disabled={disableChanges}
               errorText={this.state.hostErrorMessage}
               style={textFieldStyle}
             />
           </Column>
           <Column xs={2} className="form-bottom-element" style={buttonOnErrorStyle}>
-            <RaisedButton label={buttonLabel} primary
+            <RaisedButton
+              label={buttonLabel}
+              primary
               onClick={() => this.connectToWebSocket()}
             />
           </Column>
@@ -141,21 +154,11 @@ class SocketSetting extends React.Component {
 }
 
 SocketSetting.propTypes = {
-  dispatch: React.PropTypes.func,
-  name: React.PropTypes.string,
-  parameters: React.PropTypes.object,
-  status: React.PropTypes.string,
-  webSocket: React.PropTypes.object,
+  dispatch: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  parameters: PropTypes.object.isRequired,
+  status: PropTypes.string.isRequired,
+  webSocket: PropTypes.object.isRequired,
 };
 
-function mapStateToProps(state) {
-  const socketState = state.socketContainerReducer;
-  const currentConnection = Helper.getCurrentConnection(socketState);
-  return {
-    name: currentConnection.name,
-    parameters: currentConnection.parameters,
-    status: currentConnection.status,
-  };
-}
-
-export default connect(mapStateToProps)(SocketSetting);
+export default SocketSetting;

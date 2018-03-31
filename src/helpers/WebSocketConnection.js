@@ -4,7 +4,6 @@ import getCloseReason from './WebSocketErrorMessages';
 import Helper from '../helpers/GlobalHelpers';
 
 class WebSocketConnection {
-
   connect(wsUri, dispatch) {
     let uri = wsUri;
     if (!(wsUri.indexOf('ws://') === 0 || wsUri.indexOf('wss://') === 0)) {

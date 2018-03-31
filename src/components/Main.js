@@ -1,6 +1,6 @@
 import React from 'react';
-import HistoryList from './HistoryList';
-import SocketPlayground from './SocketPlayground';
+import HistoryList from '../containers/HistoryList';
+import SocketPlayground from '../containers/SocketPlayground';
 import SocketPlaygroundBar from './SocketPlaygroundBar';
 import Row from './Row';
 import Column from './Column';
@@ -8,7 +8,6 @@ import Column from './Column';
 const appBarHeight = 70;
 
 class AppComponent extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {

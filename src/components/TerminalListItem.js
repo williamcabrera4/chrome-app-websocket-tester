@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Row from './Row';
 import Column from './Column';
 
@@ -14,7 +15,7 @@ const TerminalListItem = ({ messageItem }) => {
 };
 
 TerminalListItem.propTypes = {
-  messageItem: React.PropTypes.object,
+  messageItem: PropTypes.object.isRequired,
 };
 
 export default TerminalListItem;
